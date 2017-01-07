@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Shapes Constraint Language (SHACL)</title>
+	<meta charset="utf-8">
+	<script src="https://www.w3.org/Tools/respec/respec-w3c-common" async class="remove"></script>
+	<script class="remove">
+        var respecConfig = {
+            edDraftURI: "http://w3c.github.io/data-shapes/shacl/",
+            issueBase: "http://www.w3.org/2014/data-shapes/track/issues/",
+            specStatus: "ED",
+            previousPublishDate: "2016-08-14",
+            previousMaturity: "WD",
+            shortName: "shacl",
+            editors: [
+                {
+                    name: "Holger Knublauch",
+                    url: "http://knublauch.com/",
+                    company: "TopQuadrant, Inc.",
+                    companyURL: "http://topquadrant.com/",
+                    w3cid: 46500
+                },
+                {
+                    name: "Dimitris Kontokostas",
+                    url: "http://Kontokostas.com",
+                    company: "University of Leipzig",
+                    companyURL: "http://informatik.uni-leipzig.de/",
+                    w3cid: 58399
+                }
+            ],
+            wg: "RDF Data Shapes Working Group",
+            wgURI: "https://www.w3.org/2014/data-shapes/",
+            wgPublicList: "public-rdf-shapes",
+            wgPatentURI: "https://www.w3.org/2004/01/pp-impl/73865/status",
+            noHighlightCSS: true
+        };
+	</script>
+	<style>
+
+		pre {
+			tab-size: 3;
+			-moz-tab-size: 3; /* Code for Firefox */
+			-o-tab-size: 3; /* Code for Opera */
+		}
+
+		th {
+			text-align: left;
+		}
+
+		table.rule {
+			background-color: #EBEBE0;
+		}
+
+		table.rule td {
+			text-align: center;
+		}
+
+		td.up {
+			border-bottom: 1px solid black;
+		}
+
+		td {
+			vertical-align: top;
+		}
+
+		.algorithm {
+			background: #fafafc;
+			border-left-style: solid;
+			border-left-width: .5em;
+			border-color: #c0c0c0;
+			margin-bottom: 16px;
+			padding: 8px;
+		}
+
+		.arg {
+			font-weight: bold;
+			color: #000080;
+		}
+
+		.def {
+			background: #fcfcfc;
+			border-left-style: solid;
+			border-left-width: .5em;
+			border-color: #c0c0c0;
+			margin-bottom: 16px;
+			padding: 8px;
+		}
+
+		.def-sparql {
+		}
+
+		.def-sparql-body {
+			margin-top: 0px;
+			margin-bottom: 0px;
+		}
+
+		.def-text {
+		}
+
+		.def-text-body {
+		}
+
+		.def-header {
+			color: #a0a0a0;
+			font-size: 16px;
+			padding-bottom: 8px;
+		}
+
+		.diagram-class {
+			border: 1px solid black;
+			border-radius: 4px;
+			width: 360px;
+		}
+
+		.diagram-class-name {
+			font-size: 16px;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		.diagram-class-properties {
+			border-top: 1px solid black;
+		}
+
+		.diagram-class-properties-start {
+			padding: 8px;
+		}
+
+		.diagram-class-properties-section {
+			border-top: 1px dashed #808080;
+			padding: 8px;
+		}
+
+		.focus-node-selected {
+			color: blue;
+		}
+
+		.focus-node-error {
+			color: red;
+		}
+
+		.triple-can-be-skipped {
+			color: grey;
+		}
+
+		.focus-node-error {
+			color: red;
+		}
+
+		.target-can-be-skipped {
+			color: darkslategray;
+			font-style: italic;
+			data-tooltip: "Custom tooltip text.";
+			data-tooltip-position: "bottom";
+		}
+
+		.component-class {
+			font-weight: bold;
+			font-size: 16px;
+		}
+
+		.parameter-context {
+			font-weight: bold;
+			font-size: 16px;
+		}
+
+		.parameters {
+			font-weight: bold;
+			font-size: 16px;
+		}
+
+		.part-header {
+			font-weight: bold;
+		}
+
+		.term {
+			font-style: italic;
+		}
+
+		.term-def-header {
+			font-style: italic;
+			font-weight: bold;
+		}
+
+		.term-table {
+			border-collapse: collapse;
+			border-color: #000000;
+			margin: 16px;
+		}
+
+		.term-table td, th {
+			border-width: 1px;
+			border-style: solid;
+			padding: 5px;
+		}
+
+		.todo {
+			color: red;
+		}
+
+		/* example pre taken / adapted from R2RML */
+		pre.example-shapes, pre.example-data, pre.example-results, pre.example-other {
+			margin-left: 0;
+			padding: 0 2em;
+			margin-top: 1.5em;
+			padding: 1em;
+		}
+
+		pre.example-shapes:before, pre.example-data:before, pre.example-results:before, pre.example-other:before {
+			background: white;
+			display: block;
+			font-family: sans-serif;
+			margin: -1em 0 0.4em -1em;
+			padding: 0.2em 1em;
+		}
+
+		pre.example-shapes {
+			background: #deb;
+		}
+
+		pre.example-shapes, pre.example-shapes:before {
+			border: 1px solid #bbb;
+		}
+
+		pre.example-shapes:before {
+			color: #888;
+			content: "Example shapes graph";
+			width: 13em;
+		}
+
+		pre.example-data {
+			background: #eeb;
+		}
+
+		pre.example-data, pre.example-data:before {
+			border: 1px solid #cc9;
+		}
+
+		pre.example-data:before {
+			color: #996;
+			content: "Example data graph";
+			width: 13em;
+		}
+
+		example-results {
+			background: #edb;
+		}
+
+		example-results, .example-results:before, .example-results th, .example-results td {
+			border: 1px solid #aca;
+		}
+
+		pre.example-results:before {
+			color: #797;
+			content: "Example validation results";
+			width: 13em;
+		}
+
+		pre.example-other {
+			background: #bed;
+		}
+
+		pre.example-other, pre.example-other:before {
+			border: 1px solid #ddd;
+		}
+
+		pre.example-other:before {
+			color: #888;
+			content: "Example";
+			width: 13em;
+		}
+
+		/* our syntax menu for switching */
+		div.syntaxmenu {
+			border: 1px dotted black;
+			padding: 0.5em;
+			margin: 1em;
+		}
+
+		@media print {
+			div.syntaxmenu {
+				display: none;
+			}
+		}
+	</style>
+</head>
+<body>
+
+<section id="abstract">
+	<p>
+		This document defines the SHACL Shapes Constraint Language, a language for validating RDF graphs against a set
+		of conditions.
+		These conditions are provided as shapes and other constructs expressed in the form of an RDF graph.
+		RDF graphs that are used in this manner are called "shapes graphs" in SHACL and
+		the RDF graphs that are validated against a shapes graph are called "data graphs".
+		As SHACL shape graphs are used to validate that data graphs satisfy a set of conditions
+		they can also be viewed as a description of the data graphs that do satisfy these conditions.
+		Such descriptions may be used for a variety of purposes beside validation, including
+		user interface building, code generation and data integration.
+	</p>
+</section>
+
+<section id="sotd">
+</section>
+
+<section class="introductory">
+	<h2>Document Outline</h2>
+	<p>
+		This document covers the the <a>SHACL Core</a> language.
+	</p>
+	<p>
+		SHACL Full, an extension of SHACL Core that includes SPARQL-based constraints and user defined constraint
+		components is defined in <span class="todo">link to document</span>.
+	</p>
+	<p>
+		The examples in this document use Turtle [[!turtle]].
+		The reader should be familiar with basic RDF concepts [[!rdf11-concepts]] such as triples and, for the advanced
+		concepts of SHACL, with SPARQL [[!sparql11-overview]].
+	<p>
+	</p>
+</section>
+
+<section id="introduction">
+	<h2>Introduction</h2>
+
+	<section id="conformance">
+		<p>
+			<span class="todo">TODO: needs more work.</span>
+		</p>
+		<p>
+			This specification describes conformance criteria for:
+		</p>
+		<ul>
+			<li><strong>SHACL Core</strong> language, also referred to as just <strong>SHACL</strong></li>
+			<li>SHACL Shapes Graphs, as defined in <a href="#shapes-graph" class="todo">section 3</a></li>
+			<li>Validation of a data graph against a shapes graph, as defined in <a href="#validation" class="todo">section
+				3</a></li>
+			<li>Validation of an RDF term from a data graph against a shape from the shapes graph, as defined in <a
+					href="#validation" class="todo">section 3</a></li>
+			<li><strong>SHACL Core processors</strong> as processors that support validation with the SHACL Core
+				Language
+			</li>
+		</ul>
+		<p>
+			<span class="todo">TODO: link to test cases.</span>
+		</p>
+	</section>
+
+
+	<section id="conventions">
+		<h2>Document Conventions</h2>
+		<p>
+			Throughout this document, IRIs are written in Turtle syntax, using the
+			following mapping of prefixes to namespaces:
+		</p>
+		<table class="term-table">
+			<tr>
+				<th>Prefix</th>
+				<th>Namespace</th>
+			</tr>
+			<tr>
+				<td><code>rdf:</code></td>
+				<td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code></td>
+			</tr>
+			<tr>
+				<td><code>rdfs:</code></td>
+				<td><code>http://www.w3.org/2000/01/rdf-schema#</code></td>
+			</tr>
+			<tr>
+				<td><code>sh:</code></td>
+				<td><code><a href="shacl.ttl">http://www.w3.org/ns/shacl#</a></code></td>
+			</tr>
+			<tr>
+				<td><code>xsd:</code></td>
+				<td><code>http://www.w3.org/2001/XMLSchema#</code></td>
+			</tr>
+			<tr>
+				<td><code>ex:</code></td>
+				<td><code>http://example.com/ns#</code></td>
+			</tr>
+		</table>
+
+		<p><em>The remainder of this section is informative.</em></p>
+		<p>
+			Note that the URI of the graph defining the SHACL vocabulary itself is equivalent to
+			the namespace above, i.e. it includes the <code>#</code>.
+			References to the SHACL vocabulary, e.g. via <code>owl:imports</code> should include the <code>#</code>.
+		</p>
+		<p>
+			The <a href="shacl.ttl">Turtle serialization of the SHACL vocabulary</a> <span class="todo">will be</span>
+			uploaded to web URL of the graph that it represents.
+		</p>
+		<p>
+			Throughout the document, color-coded boxes containing RDF graphs in Turtle will appear.
+			These fragments of Turtle documents use the prefix bindings given above.
+		</p>
+		<pre class="example-shapes">
+	# This box represents an input shapes graph
+
+	# Triples that can be omitted are marked as grey e.g.
+	<span class="triple-can-be-skipped">&lt;s&gt; &lt;p&gt; &lt;o&gt; .</span></pre>
+
+		<pre class="example-data">
+	# This box represents an input data graph.
+	# When highlighting is used in the examples:
+
+	# Elements highlighted in blue are <a>focus nodes</a>
+	<span class="focus-node-selected">ex:Bob</span> a ex:Person .
+
+	# Elements highlighted in red are focus nodes that fail <a href="#validation">validation</a>
+	<span class="focus-node-error">ex:Alice</span> a ex:Person .</pre>
+
+		<pre class="example-results">
+	# This box represents an output results graph</pre>
+
+		<p>
+			SHACL Definitions appear in blue boxes:
+		</p>
+		<div class="def def-sparql">
+			<div class="def-header">DEFINITIONS</div>
+			<pre class="def-sparql-body">
+	# This box contains textual definitions. </pre>
+		</div>
+
+	</section>
+
+
+	<section id="terminology">
+		<h2>Basic Terminology</h2>
+		<p>
+			Terminology that is linked to portions of RDF 1.1 Concepts and Abstract
+			Syntax is used in SHACL as defined there. Terminology that is linked to
+			portions of SPARQL 1.1 Query Language is used in SHACL as defined there. A
+			single linkage is sufficient to provide a definition for all occurences of a
+			particular term in this document.
+		</p>
+		<p>
+			Definitions are complete within this document, i.e., if there is no rule to
+			make a some situation true in this document then the situation is false.
+		</p>
+
+		<div class="def" id="rdf-terminology">
+			<div class="term-def-header">Basic RDF Terminology</div>
+			<div>
+				This document uses the terms
+				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-graph"><dfn
+						data-lt="graph|graphs|RDF graphs">RDF graph</dfn></a>,
+				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple"><dfn data-lt="triple|triples">RDF
+					triple</dfn></a>,
+				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri"><dfn data-lt="IRI|IRIs">IRI</dfn></a>,
+				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal"><dfn data-lt="literal|literals">literal</dfn></a>,
+				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node"><dfn
+						data-lt="blank node|blank nodes">blank node</dfn></a>,
+				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-node"><dfn data-lt="node|nodes">node</dfn></a>
+				of an RDF graph,
+				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term"><dfn>RDF term</dfn></a>, and
+				<a href="https://www.w3.org/TR/rdf11-concepts/#dfn-subject"><dfn
+						data-lt="subject|subjects">subject</dfn></a>,
+				<a href="https://www.w3.org/TR/rdf11-concepts/#dfn-predicate"><dfn
+						data-lt="predicate|predicates">predicate</dfn></a>, and
+				<a href="https://www.w3.org/TR/rdf11-concepts/#dfn-object"><dfn
+						data-lt="object|objects">object</dfn></a> of RDF triples, and
+				<a href="https://www.w3.org/TR/rdf11-concepts/#dfn-datatype"><dfn
+						data-lt="datatypes">datatype</dfn></a>
+				as defined in RDF 1.1 Concepts and Abstract Syntax [[!rdf11-concepts]].
+			</div>
+		</div>
+
+		<div class="def">
+			<div class="term-def-header">Path</div>
+			<div>
+				A <dfn>path</dfn> in an <a>RDF graph</a> <code>G</code> from <a>RDF term</a> <code>n</code> to RDF term
+				m is a sequence
+				of <a>RDF triples</a> in <code>G</code> such that the <a>subject</a> of the first RDF triple is n,
+				the <a>object</a> of the last RDF triple is <code>m</code>, and the object of each RDF triple
+				except the last is the subject of the next.
+			</div>
+		</div>
+		<div class="def">
+			<div class="term-def-header">Property</div>
+			<div>
+				A <dfn>property</dfn> is an <a>IRI</a>.
+			</div>
+		</div>
+		<div class="def">
+			<div class="term-def-header">Value</div>
+			<div>
+				An RDF term <code>n</code> has <dfn>value</dfn> <code>v</code> for property <code>p</code> in an
+				RDF graph <code>G</code> if there is
+				an RDF triple in <code>G</code> with subject <code>n</code>, predicate <code>p</code>, and
+				object <code>v</code>.
+
+				An RDF term <code>n</code> has value <code>v</code> for <a
+					href="https://www.w3.org/TR/sparql11-query/#pp-language">SPARQL property path expression</a>
+				<code>p</code> in an
+				RDF graph <code>G</code> if there is a solution mapping in the result of the SPARQL query
+				<code>SELECT ?s ?o WHERE { ?s p' ?o }</code> on <code>G</code> that binds <code>?s</code> to
+				<code>n</code> and <code>?o</code> to <code>v</code>, where
+				<code>p'</code> is SPARQL surface syntax for <code>p</code>.
+			</div>
+		</div>
+		<div class="def">
+			<div class="term-def-header">SHACL List</div>
+			<div>
+				A <dfn data-lt="SHACL lists">SHACL list</dfn> in an RDF graph <code>G</code> is an IRI or a <a>blank
+				node</a> that is
+				either <code>rdf:nil</code> (provided that <code>rdf:nil</code> has no value for either
+				<code>rdf:first</code>
+				or
+				<code>rdf:rest</code> in <code>G</code>), or has exactly one value for <code>rdf:first</code> in
+				<code>G</code> and exactly one
+				value for <code>rdf:rest</code> in <code>G</code> that is also a SHACL list in <code>G</code>
+				and there is
+				no non-empty path in <code>G</code> from the list back to itself where the predicates of
+				the RDF triples in the path are each <code>rdf:rest</code>.
+
+				The <dfn data-lt="member">members</dfn> of any SHACL list except <code>rdf:nil</code> in an RDF
+				graph <code>G</code> consist
+				of its value for <code>rdf:first</code> in <code>G</code> followed by the members in
+				<code>G</code> of its value
+				for <code>rdf:rest</code> in <code>G</code>.
+				The SHACL list <code>rdf:nil</code> has no <a>members</a> in any RDF graph.
+			</div>
+		</div>
+		<div class="def">
+			<div class="term-def-header">SHACL Type and Expected Type</div>
+			<div>
+				An RDF term <code>n</code> is a <dfn data-lt="SHACL instance|SHACL instances">SHACL instance</dfn> of an
+				RDF
+				term m in an RDF graph <code>G</code> if
+				there is a path in <code>G</code> from <code>n</code> to <code>m</code> where the predicate of
+				the first RDF triple
+				in the path is <code>rdf:type</code> and the predicates of any other RDF triples in the
+				path are <code>rdfs:subClassOf</code>.
+
+				An RDF term <code>n</code> has an RDF term <code>m</code> as <dfn
+					data-lt="type|types|SHACL type">SHACL types</dfn> in an RDF graph <code>G</code> if <code>n</code>
+				is a
+				SHACL instance of <code>m</code> in <code>G</code>.
+
+				RDF terms have zero or more <dfn data-lt="expected type">expected types</dfn> in an RDF graph.
+				Each expected type for an RDF term in an RDF graph <code>G</code> is the result of the RDF
+				term being the object of an RDF triple in <code>G</code> with a particular predicate as
+				described in this document.
+			</div>
+		</div>
+
+		<div class="def">
+			<div class="term-def-header">Data Graph</div>
+			<div>
+				A <dfn data-lt="data graphs">data graph</dfn> is any RDF graph.
+			</div>
+		</div>
+
+		<section id="shacl-property-path">
+			<h3><dfn data-lt="SHACL Property Path">SHACL Property Paths</dfn></h3>
+			<p>
+				A blank node is an <dfn>ill-formed property path</dfn> in an RDF graph <code>G</code> if it has
+				a value for more than one of
+				<code>rdf:first</code>,
+				<code>sh:alternativePath</code>,
+				<code>sh:inversePath</code>,
+				<code>sh:zeroOrMorePath</code>,
+				<code>sh:oneOrMorePath</code>,
+				or <code>sh:zeroOrOnePath</code> in <code>G</code>.
+			</p>
+			<p>
+				A blank node is an <a>ill-formed property path</a> in an RDF graph <code>G</code> if there is
+				a <a>path</a> in <code>G</code> from the node back to itself where the sequence of
+				predicates of the RDF triples in the path matches the regular expression
+				<code>( ( rdf:rest* rdf:first ) | sh:alternativePath ( rdf:rest* rdf:first ) | sh:inversePath |
+					sh:zeroOrMorePath | sh:oneOrMorePath | sh:zeroOrOnePath ) +</code>.
+			</p>
+			<p>
+				An RDF term is an <a>ill-formed property path</a> in an RDF graph
+				if it does not satisfy exactly one of the conditions in the mapping below.
+			</p>
+			<p>
+				If an RDF term is not an <a>ill-formed property path</a> in an RDF graph <code>G</code> then
+				it is a <a>SHACL property path</a> in <code>G</code>.
+			</p>
+			<p>
+				The <dfn>path mapping</dfn> in an RDF graph <code>G</code> of a RDF term <code>p</code> that is a SHACL
+				property path in <code>G</code>, <code>path(p,S)</code>, is a *SPARQL property path expression*
+				defined as follows:
+			</p>
+			<ol>
+				<li>If <code>p</code> is an IRI then <code>path(p,S)</code> is <code>PredicatePath(p)</code>.
+				</li>
+				<li>2/ If <code>p</code> is a blank node that is a SHACL list in <code>G</code> that has at least two
+					members in <code>G</code> and none of these members are <a>ill-formed property paths</a> in
+					<code>G</code>
+					then path(p,S) is <code>SequencePath(path(v1,S) ... path(vn,S))</code> where vi are the
+					members of <code>p</code> in <code>G</code>, in order.
+				</li>
+				<li>If <code>p</code> is a blank node that has exactly one value for sh:alternativePath in
+					G and that value is a SHACL list in <code>G</code> that has at least two members in <code>G</code>
+					and
+					none of the members in <code>G</code> are ill-formed property paths in <code>G</code> then path(p,S)
+					is AlternativePath(path(v1,S) ... path(vn,S)) where vi are the members of
+					the list in <code>G</code>, in order.
+
+					<ul>
+						<li>
+							If <code>p</code> is a blank node that has exactly one value <code>v</code> for
+							sh:inversePath in <code>G</code>
+							and <code>v</code> is not an ill-formed property path in <code>G</code> then path(p,S) is
+							InversePath(path(v,S)).
+						</li>
+						<li> If <code>p</code> is a blank node that has exactly one value <code>v</code> for
+							sh:zeroOrMorePath
+							in <code>G</code> and <code>v</code> is not an ill-formed property path in <code>G</code>
+							then path(p,S) is
+							ZeroOrMorePath(path(v,S)).
+						</li>
+						<li> If <code>p</code> is a blank node that has exactly one value <code>v</code> for
+							sh:oneOrMorePath in
+							G and <code>v</code> is not an ill-formed property path in <code>G</code> then path(p,S) is
+							OneOrMorePath(path(v,S)).
+						</li>
+						<li> If <code>p</code> is a blank node that has exactly one value <code>v</code> for
+							sh:zeroOrOnePath in
+							G and <code>v</code> is not an ill-formed property path in <code>G</code> then path(p,S) is
+							ZeroOrOnePath(path(v,S)).
+						</li>
+					</ul>
+				</li>
+			</ol>
+			<p>
+				SHACL property paths in same or different RDF graphs are <dfn>equivalent</dfn> if
+				their path mappings in their graphs are the same.
+			</p>
+
+			<p><em>The remainder of this section is informative.</em></p>
+			<p>
+				The following example illustrates some valid SHACL property paths, together with their SPARQL 1.1
+				equivalents.
+			</p>
+			<pre class="example-other">
+SPARQL Property path: ex:parent
+SHACL Property path: ex:parent
+
+SPARQL Property path: ^ex:parent
+SHACL Property path: [ sh:inversePath ex:parent ]
+
+SPARQL Property path: ex:parent/ex:firstName
+SHACL Property path: ( ex:parent ex:firstName )
+
+SPARQL Property path: rdf:type/rdfs:subClassOf*
+SHACL Property path: ( rdf:type [ sh:zeroOrMorePath rdfs:subClassOf ] )
+
+SPARQL Property path: ex:father|ex:mother
+SHACL Property path: [ sh:alternativePath ( ex:father ex:mother  ) ]</pre>
+
+		</section>
+
+
+	</section>
+
+
+	<section id="shacl-rdfs">
+		<h3>SHACL Validation and RDFS inferencing</h3>
+		<p>
+			SHACL uses the RDF and RDFS vocabularies, but full RDFS inferencing is not required.
+			However, SHACL processors MUST identify <a>SHACL instances</a> of a class both in the <a>data graph</a> and
+			the <a>shapes graph</a> without modifying either graph during the <a href="#validation">validation
+			process</a>.
+			Furthermore, SHACL processors MAY operate on RDF graphs that include entailments - either pre-computed
+			before being submitted to a SHACL processor or performed on the fly as part of SHACL processing.
+			To support processing of entailments, SHACL includes the property <a
+				href="#entailment"><code>sh:entailment</code></a> to indicate what inferencing is required by a given
+			<a>shapes graph</a>.
+			SHACL implementations MAY, but are not required to, support entailment regimes.
+		</p>
+	</section>
+
+
+	<section class="informative">
+		<h3>SHACL Example (TODO)</h3>
+		<p>
+			The following example <a>data graph</a> contains three <a>SHACL instances</a> of the <a>class</a> <code>ex:Person</code>.
+		</p>
+		<pre class="example-data">
+ex:Alice
+	a ex:Person ;
+	ex:child ex:Calvin ;
+	ex:ssn "987-65-432A" .
+
+ex:Bob
+	a ex:Person ;
+	ex:child ex:Calvin ;
+	ex:ssn "123-45-6789" ;
+	ex:ssn "124-35-6789" .
+
+ex:Calvin
+	a ex:Person ;
+	ex:school ex:TrinityAnglicanSchool .</pre>
+		<p>
+			The following conditions are shown in the example:
+		<p>
+		<ul>
+			<li>
+				A <a>SHACL instance</a> of <code>ex:Person</code> can have at most one <a>value</a> for the property
+				<code>ex:ssn</code>,
+				and this <a>value</a> is a <a>literal</a> with the datatype <code>xsd:string</code> that matches
+				a specified regular expression.
+			</li>
+			<li>
+				A <a>SHACL instance</a> of <code>ex:Person</code> can have unlimited <a>values</a> for the property
+				<code>ex:child</code>,
+				and these <a>values</a> are <a>IRIs</a> and <a>SHACL instances</a> of <code>ex:Person</code>.
+			</li>
+			<li>
+				A person's parents are represented using the property <code>ex:child</code> in the inverse direction.
+				A <a>SHACL instance</a> of <code>ex:Person</code> can have at most 2 parents, i.e. can be the
+				<a>object</a> of at most two <a>triples</a>
+				where the <a>predicate</a> is <code>ex:child</code>.
+			</li>
+			<li>
+				A <a>SHACL instance</a> of <code>ex:Person</code> cannot have <a>values</a> for any other property apart
+				from
+				<code>ex:ssn</code>, <code>ex:child</code> and <code>rdf:type</code>.
+			</li>
+		</ul>
+		<p>
+			The aforementioned conditions can be represented as <a>constraints</a> in the following <a>shapes graph</a>:
+		</p>
+		<pre class="example-shapes">
+ex:PersonShape
+	a sh:Shape ;
+	sh:targetClass ex:Person ;    # Applies to all persons
+	sh:shape [
+		sh:path ex:ssn ;     # This constraint is about the values of the ex:ssn property
+		sh:maxCount 1 ;
+		sh:datatype xsd:string ;
+		sh:pattern "^\\d{3}-\\d{2}-\\d{4}$" ;
+	] ;
+	sh:shape [
+		sh:path ex:child ;
+		sh:class ex:Person ;
+		sh:nodeKind sh:IRI ;
+	] ;
+	sh:shape [
+		rdfs:comment "A person's parents are represented via ex:child used in the inverse direction." ;
+		sh:path [ sh:inversePath ex:child ] ;
+		sh:name "parent" ;
+		sh:maxCount 2 ;
+	] ;
+	sh:closed true ;
+	sh:ignoredProperties (    <code>rdf:type</code> ) .</pre>
+		<p>
+			We can use the shape declaration above to illustrate some of the key terminology used by SHACL.
+			The <a>focus nodes</a> for the <a>shape</a> <code>ex:PersonShape</code> are all <a>SHACL instances</a> of
+			the <a>class</a> <code>ex:Person</code>.
+			These <a>focus nodes</a> are the <a>targets</a> of the <a>shape</a> and are specified using the property
+			<code>sh:targetClass</code>.
+			The <a>shape</a> has three <a>property constraints</a> with the property <code>sh:shape</code>,
+			one of which uses a <a>path</a> expression.
+			The <a>shape</a> itself is also a constraint on the <a>focus nodes</a> using the <a>parameters</a> <code>sh:closed</code>
+			and <code>sh:ignoredProperties</code>.
+		</p>
+		<p>
+			Some of the <a>property constraints</a> specify parameters from multiple <a>constraint components</a> in
+			order to
+			restrict multiple aspects of the <a>property values</a>.
+			For example, in the <a>property constraint</a> for <code>ex:ssn</code>, parameters from three <a>constraint
+			components</a> are used.
+			The <a>parameters</a> of these <a>constraint components</a> are <code>sh:datatype</code>,
+			<code>sh:pattern</code> and <code>sh:maxCount</code>.
+			For each <a>focus node</a> the <a>property values</a> of <code>ex:ssn</code> will be validated against all
+			three components.
+			The constraint on the inverse property values of <code>sh:child</code> uses only one <a>constraint
+			component</a> identified by the <code>sh:maxCount</code> <a>parameter</a>.
+			Note that this <a>constraint</a> uses the <a>non-validating property</a> <code>sh:name</code>
+			to suggest a human-readable name for the property when used in the inverse direction.
+		</p>
+		<p>
+			SHACL <a>validation</a> based on the provided <a>data graph</a> and <a>shapes graph</a> would produce the
+			following <a>validation report</a>.
+			See the section <a href="#validation-report">Validation Report</a> for details on the format.
+		</p>
+		<pre class="example-results">
+[] a sh:ValidationReport ;
+	sh:conforms "false"^^xsd:boolean ;
+	sh:result
+	[  	a sh:ValidationResult ;
+		sh:resultSeverity sh:Violation ;
+		sh:focusNode ex:Alice ;
+		sh:resultPath ex:ssn ;
+		sh:value "987-65-432A" ;
+		sh:sourceConstraintComponent sh:RegexConstraintComponent ;
+		sh:sourceShape ex:PersonShape ;
+	] ,
+	[	a sh:ValidationResult ;
+		sh:resultSeverity sh:Violation ;
+		sh:focusNode ex:Bob ;
+		sh:resultPath ex:ssn ;
+		sh:sourceConstraintComponent sh:MaxCountConstraintComponent ;
+		sh:sourceShape ex:PersonShape ;
+	] ,
+	[	a sh:ValidationResult ;
+		sh:resultSeverity sh:Violation ;
+		sh:focusNode ex:Calvin ;
+		sh:resultPath ex:school ;
+		sh:value ex:TrinityAnglicanSchool ;
+		sh:sourceConstraintComponent sh:ClosedConstraintComponent ;
+		sh:sourceShape ex:PersonShape ;
+	] .</pre>
+		<p>
+			The <a>validation results</a> are enclosed in a <a>validation report</a>.
+			The first <a>validation result</a> is produced because <code>ex:Alice</code> has a <a>value</a> for <code>ex:ssn</code>
+			that does not match the regular expression specified by the property <code>sh:regex</code>.
+			The second <a>validation result</a> is produced because <code>ex:Bob</code> has more than the permitted
+			number of <a>values</a>
+			for the property <code>ex:ssn</code> as specified by the <code>sh:maxCount</code> of 1.
+			The third <a>validation result</a> is produced because the <a>shape</a> <code>ex:PersonShape</code> has the
+			the property <code>sh:closed</code> set to <code>true</code>
+			but <code>ex:Calvin</code> uses the property <code>ex:school</code> which is neither one of the predicates
+			from any of the
+			<a>property constraints</a> of the shape, nor one of the properties listed using
+			<code>sh:ignoredProperties</code>.
+		</p>
+	</section>
+
+
+</section>
+
+
+<section>
+	<h2>Validation Results and Validation Reports</h2>
+
+	<p>
+		A <dfn>results graph</dfn> is an RDF graph <code>G</code> where every <a>node</a> in <code>G</code> that has
+		<a>SHACL type</a> <code>sh:ValidationResult</code> in <code>G</code> meets the following conditions
+	</p>
+	<ul>
+		<li>It has sh:ValidationResult as a value for <code>rdf:type</code> in <code>G</code>
+		</li>
+		<li>It has exactly one value for sh:focusNode in <code>G</code>
+		</li>
+		<li>It has at most one value for sh:valueNode in <code>G</code>
+		</li>
+		<li>It has at most one value for sh:resultPath in <code>G</code> and this value
+			if present is a <a>SHACL property path</a> in <code>G</code>
+		</li>
+		<li>It has exactly one value for sh:sourceShape in <code>G</code>
+		</li>
+		<li>It has exactly one value for sh:sourceConstraintComponent in <code>G</code>
+		</li>
+		<li>It has exactly one value for sh:resultSeverity in <code>G</code>
+		</li>
+		<li>Each of its values for sh:resultMessage in <code>G</code> is a language-tagged
+			literal and each has a different language tag.
+		</li>
+		<li>Each of its values for sh:detail in <code>G</code> has SHACL type
+			sh:ValidationResult.
+		</li>
+		<li>Each of its values for <code>p</code> in <code>G</code> where <code>p</code> is a list-taking parameter is a
+			SHACL list in <code>G</code>.
+		</li>
+	</ul>
+	<p>
+		A <dfn>validation result</dfn> from RDF term f, optional RDF term v, data graph
+		D, constraint c with type C, and shape s in shapes graph S
+		is a node in a results graph <code>G</code> that meets the following conditions
+	</p>
+	<ul>
+		<li>It has <code>sh:ValidationResult</code> as a value for <code>rdf:type</code> in <code>G</code>
+		</li>
+		<li>Its sole <a>value</a> for <code>sh:focusNode</code> in <code>G</code> is f
+		</li>
+		<li>Its sole value for <code>sh:valueNode</code> in <code>G</code> is <code>v</code> if <code>v</code> is
+			present,
+			otherwise it has no value for <code>sh:valueNode</code> in <code>G</code>
+		</li>
+		<li>Its sole value for sh:resultPath in <code>G</code> is a SHACL property path in <code>G</code> that
+			is equivalent to the value of s for <code>sh:path</code> in S if there is one,
+			otherwise it has no value for sh:resultPath in <code>G</code>
+		</li>
+		<li>Its sole value for sh:sourceShape in <code>G</code> is s
+		</li>
+		<li>Its sole value for sh:sourceConstraintComponent in <code>G</code> is C
+		</li>
+		<li>Its sole value for sh:resultSeverity in <code>G</code> is the severity of s in S
+		</li>
+		<li>Its <a>values</a>, if any, for <code>p</code> in <code>G</code> with <code>p</code> a non-list-taking
+			parameter of C
+			and <code>X = { x | &lt;p,x&gt; is a parameter value of c }</code> are the elements of X
+		</li>
+		<li>Its values, if any, for <code>p</code> in <code>G</code> with <code>p</code> a list-taking parameter of C
+			and <code>X = { x | &lt;p,x&gt; is a parameter value of c }</code> contain for each member
+			of X a SHACL list in <code>G</code> whose elements in <code>G</code> are the elements of X in S
+	</ul>
+	<p>
+		A <dfn>results structure</dfn> is a results graph R and a set of nodes from R each
+		of which have SHACL type sh:ValidationResult in R. The set of nodes is
+		called the <dfn data-lt="top-level validation result">top-level validation results</dfn> of the results
+		structure.
+	</p>
+	<p>
+		A results structure <dfn>contains</dfn> a top-level validation result from
+		<code>f,v,D,c,s,S</code> if its graph contains a node that is a validation result from
+		<code>f,v,D,c,s,S</code> and that node is an element of its top-level validation results.
+	</p>
+	<p>
+		A <dfn>validation report</dfn> <code>V</code> for a <a>results structure</a> <code>R</code> is any results graph
+		containing at least the triples of <code>R</code> plus a new blank node <code>n</code> with
+		<code>sh:ValidationReport</code> as a value for <code>rdf:type</code> in <code>V</code>;
+		<code>"false"^^xsd:boolean</code> as sole value for <code>sh:conforms</code> in <code>V</code>
+		if <code>R</code> has any top-level validation results in <code>R</code>, and <code>"true"^^xsd:boolean</code>
+		otherwise;
+		and whose set of values for <code>sh:result</code> in <code>V</code> is the set of top-level validation results
+		in <code>R</code>.
+	</p>
+	<p>
+		The <dfn>combination</dfn> of a multiset of results structures is the union of the
+		graphs of the results structures and the union of their sets of top-level
+		validation results, provided that this is a results structure.
+	</p>
+
+	<p><em>The remainder of this section is informative.</em></p>
+
+	<p>
+		<a>Combination</a> does not use merging so that, for example,
+		validation results and SHACL property paths do not have to be replicated.
+		Care does need to be taken when different results structures share blank
+		nodes so that invalid validation results or SHACL property paths do not
+		result.
+	</p>
+	<p>
+		<a>Validation reports</a> are only required to contain
+		<a>top-level validation results</a> from results graphs, i.e., the results for
+		validating elements of the complete targets of shapes against the shape.
+		Implementations are encouraged to provide interfaces that also retain other
+		validation results and to use the property <code>sh:detail</code> to link from a
+		validation result for a shape to validation results from subsidiary
+		conformance checking such as is required for constraints of type
+		<code>sh:ShapeConstraintComponent</code>.
+</section>
+
+<section>
+	<h2>SHACL Shapes</h2>
+	<section>
+		<h3>Shapes and Shapes Graphs</h3>
+		<p>
+			The <dfn data-lt="shape">shapes</dfn> of an RDF graph <code>G</code> are those nodes in <code>G</code> with
+			SHACL or <a>expected
+			type</a> <code>sh:Shape</code> in <code>G</code>.
+		</p>
+		<p>
+			A <dfn>shapes graph</dfn> is an RDF graph <code>G</code> containing no <dfn data-lt="Ill-formed shape">ill-formed
+			shapes</dfn> in <code>G</code>.
+			Ill-formed shapes are described in the rest of this document.
+		</p>
+		<p>
+			If s is a shape in an RDF graph <code>G</code> with more than one value for sh:severity
+			in <code>G</code> or a a value that is not sh:Info, sh:Warning, or sh:Violation then s is
+			an <a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			The <dfn>severity</dfn> of a SHACL shape in a shapes graph S is its value for
+			sh:severity in S, if any, otherwise <code>sh:Violation</code>.
+		</p>
+	</section>
+	<section>
+		<h3>Constraint components and constraints</h3>
+		<p>
+			A <dfn data-lt="constraint component|constraint components|components|component">constraint component</dfn>
+			is one of the IRIs so-described in the rest of
+			this document. Each constraint component has one or more **mandatory
+			parameters**, each of which is a property. Each constraint component has
+			zero or more **optional parameters**, each of which is a property. The
+			<dfn data-lt="parameter">parameters</dfn> of a constraint component are its mandatory parameters plus
+			its optional parameters. Some parameters of a constraint component are
+			<dfn>list-taking parameters</dfn>. A parameter that forces expected type sh:Shape
+			on objects of triples with with it as predicate or members of such objects
+			is a <dfn>shape-inducing parameter</dfn>.
+		</p>
+		<p>
+			For a constraint component C with mandatory parameters p1, ..., pn a shape s
+			in a shapes graph S has a <dfn>constraint</dfn> of type C with <dfn>mandatory
+			parameter values</dfn> <code>&lt;p1,v1&gt;, ..., &lt;pn,vn&gt;</code> in S when s has vi as a value for
+			pi in S. If s in S has a constraint of type C in S then the <dfn>optional
+			parameter values</dfn> of the constraint in S are all the &lt;oi,vi&gt; where oi is an
+			optional parameter of C and s has vi as a value for oi in S.
+			The <dfn>parameter values</dfn> of a constraint are its manadatory parameter values and
+			its optional parameter values.
+		</p>
+	</section>
+
+	<section>
+		<h3>Recursive Shapes and Recursive Shapes Graphs</h3>
+		<p>
+			A shape <code>s1</code> in an RDF graph <code>G</code> <dfn>refers</dfn> to shape s2 in <code>G</code> if it
+			has s2
+			as value for some non-list-taking, shape-inducing parameter of some
+			constraint component or s2 as a member of the value for some list-taking,
+			shape-inducing parameter of some constraint component.
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> is a <dfn>recursive shape</dfn> in <code>G</code> if it is related to
+			itself
+			by the transitive closure of the <a>refers</a> relationship in <code>G</code>. An RDF graph <code>G</code>
+			that contains a <a>recursive shape</a> in <code>G</code> is <a>recursive</a>.
+		</p>
+	</section>
+
+	<section>
+		<h3>Targets</h3>
+		<p>
+			The complete <dfn data-lt="target">targets</dfn> from a data graph <code>D</code> for a shape s in a shapes
+			graph
+			S is the union of the targets from <code>D</code> for s in S as defined in the reminder <code>f</code> this
+			section.
+		</p>
+
+		<section id="targetNode">
+			<h4>Node targets (sh:targetNode)</h4>
+			<p>
+				If s is a shape in an RDF graph <code>G</code> with a value for sh:targetNode in <code>G</code> that
+				is not an IRI or <a>literal</a> then s is an <a>ill-formed shape</a> in <code>G</code>.
+			</p>
+			<p>
+				If s is a shape in a shapes graph S and s has value t for sh:targetNode in S
+				then { t } is a <a>target</a> from any data graph for s in S.
+			</p>
+			<p><em>The remainder of this section is informative.</em></p>
+
+			<p>
+				With the example data below, only <code>ex:Alice</code> is the target of the provided shape:
+			</p>
+			<pre class="example-shapes">
+ex:PersonShape
+	a sh:Shape ;
+	sh:targetNode ex:Alice .</pre>
+
+			<pre class="example-data">
+<span class="focus-node-selected">ex:Alice</span> a ex:Person .
+ex:Bob a ex:Person .</pre>
+		</section>
+
+		<section id="targetClass">
+			<h4>Class-based Targets (sh:targetClass)</h4>
+			<p>
+				If s is a shape in an RDF graph <code>G</code> with a value for sh:targetClass in <code>G</code> that
+				is not an IRI then s is an <a>ill-formed shape</a> in <code>G</code>.
+
+				If s is a shape in a shapes graph S and s has value c for sh:targetClass in
+				S then the set of SHACL instances of c in a data graph <code>D</code> is a **target**
+				from <code>D</code> for s in S.
+			</p>
+
+			<p><em>The remainder of this section is informative.</em></p>
+
+			<pre class="example-shapes">
+ex:PersonShape
+	a sh:Shape ;
+	sh:targetClass ex:Person .</pre>
+
+			<pre class="example-data">
+<span class="focus-node-selected">ex:Alice</span> a ex:Person .
+<span class="focus-node-selected">ex:Bob</span> a ex:Person .
+ex:NewYork a ex:Place .</pre>
+			<p>
+				In this example, only <code>ex:Alice</code> and <code>ex:Bob</code> are focus nodes.
+				Note that, according to the <a>SHACL instance</a> definition, all the
+				<code>rdfs:subClassOf</code> declarations needed to walk the class hierarchy need to exist in
+				the <a>data graph</a>.
+				However, the <code>ex:Person a rdfs:Class</code> triple is not required to exist in either
+				graphs.
+			</p>
+			<p>
+				In the following example, the selected focus node is only <code>ex:Who</code>.
+			</p>
+			<pre class="example-data">
+ex:Doctor rdfs:subClassOf ex:Person .
+<span class="focus-node-selected">ex:Who</span> a ex:Doctor .
+ex:House a ex:Nephrologist .</pre>
+
+
+		</section>
+
+		<section id="implicit-targetClass">
+			<h4>Implicit Class Targets</h4>
+			<p>
+				If s is a shape in an RDF graph <code>G</code> and s is also a SHACL instance of
+				rdfs:Class in <code>G</code> and s is not an IRI then s is an <a>ill-formed shape</a> in <code>G</code>.
+			</p>
+			<p>
+				If s is a shape in a shapes graph S and s is also a SHACL instance of
+				rdfs:Class in S then the set of SHACL instances of s in a data graph <code>D</code> is a
+				**target** from <code>D</code> for s in S.
+
+			</p>
+			<p><em>The remainder of this section is informative.</em></p>
+			<pre class="example-shapes">
+ex:Person
+	<b>a rdfs:Class</b>, sh:Shape .</pre>
+			<pre class="example-data">
+<span class="focus-node-selected">ex:Alice</span> a ex:Person .
+ex:NewYork a ex:Place .</pre>
+			<p>
+				In this example, only <code>ex:Alice</code> is a focus node, because it is a <a>SHACL instance</a> of
+				<code>ex:Person</code> which is both a class and a shape in the <a>shapes graph</a>.
+			</p>
+		</section>
+
+
+		<section id="targetSubjectsOf">
+			<h5>Subjects-of targets (sh:targetSubjectsOf)</h5>
+			<p>
+				A shape in an RDF graph <code>G</code> with a value for sh:targetSubjectsOf in <code>G</code> that is
+				not an IRI is an **ill-formed** shape in <code>G</code>.
+			</p>
+			<p>
+				If s is a shape in a shapes graph S and s has value <code>p</code> for sh:targetSubjectsOf
+				in S then the set of nodes in a data graph <code>D</code> that are subjects of RDF
+				triples in <code>D</code> with predicate <code>p</code> is a **target** from <code>D</code> for s in S.
+			</p>
+			<p><em>The remainder of this section is informative.</em></p>
+			<pre class="example-shapes">
+ex:TargetSubjectsOfExampleShape
+	a sh:Shape ;
+	sh:targetSubjectsOf ex:knows .</pre>
+			<pre class="example-data">
+<span class="focus-node-selected">ex:Alice</span> ex:knows ex:Bob .
+ex:Bob ex:livesIn ex:NewYork .</pre>
+			<p>
+				In the example above, only <code>ex:Alice</code> is validated against the given shape,
+				because it is the <a>subject</a> of a <a>triple</a> that has <code>ex:knows</code> as its
+				<a>predicate</a>.
+			</p>
+		</section>
+
+		<section id="targetObjectsOf">
+			<h5>Objects-of targets (sh:targetObjectsOf)</h5>
+			<p>
+				A shape in an RDF graph <code>G</code> with a value for sh:targetObjectsOf in <code>G</code> that is
+				not an IRI is an <a>ill-formed shape</a> in <code>G</code>.
+			</p>
+			<p>
+				If s is a shape in a shapes graph S and s has value <code>p</code> for sh:targetObjectsOf
+				in S then the set of nodes in a data graph <code>D</code> that are objects of RDF triples
+				in <code>D</code> with predicate <code>p</code> is a **target** from <code>D</code> for s in S.
+			</p>
+			<p><em>The remainder of this section is informative.</em></p>
+
+			<pre class="example-shapes">
+ex:TargetObjectsOfExampleShape
+	a sh:Shape ;
+	sh:targetObjectsOf ex:knows .</pre>
+			<pre class="example-data">
+ex:Alice ex:knows <span class="focus-node-selected">ex:Bob</span> .
+ex:Bob ex:livesIn ex:NewYork .</pre>
+			<p>
+				In the example above, only <code>ex:Bob</code> is validated against the given shape,
+				because it is the <a>object</a> of a <a>triple</a> that has <code>ex:knows</code> as its
+				<a>predicate</a>.
+			</p>
+		</section>
+
+
+	</section>
+
+
+	<section>
+		<h3>Value Nodes</h3>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for <code>sh:path</code> in <code>G</code> that is an
+			<a>ill-formed property path</a> in <code>G</code> is an <a>ill-formed shape</a> in <code>G</code>. A shape
+			in
+			an RDF graph <code>G</code> with more than one value for <code>sh:path</code> in <code>G</code> is an <a>ill-formed
+			shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Given <code>f</code> an RDF term, <code>D</code> a data graph, and s a shape in S a shapes graph
+			the <dfn data-lt="value node">value nodes</dfn> of <code>f</code> with <code>D</code> for s in S is the set
+			containing
+			the values of <code>f</code> for path(p,S) in <code>D</code> if s has <code>p</code> as value for <code>sh:path</code>
+			in
+			S,
+			or just <code>f</code> if s has no value for <code>sh:path</code> in S.
+		</p>
+	</section>
+
+</section>
+
+<section>
+	<h2>Validation and Conformance Checking</h2>
+	<p>
+		Validation is the main relationship defined in SHACL, usually producing a
+		validation report containing the results of the validation. There are
+		generally many different possible validation reports for a particular
+		validation. Conformance checking is a simplified version of validation,
+		usually producing a boolean result.
+	</p>
+	<p>
+		Validation and conformance checking can result in a <dfn>failure</dfn>. For example, a
+		particular SHACL processor might allow recursive shapes but report a failure
+		if it detects a loop. Failure can also be reported due to resource
+		exhaustion. Failures are signalled through implementation-specific
+		channels.
+	</p>
+	<section>
+		<h3>Conformance of a Data Graph against a Shapes Graph</h3>
+		<p>
+			Given <code>G</code> a data graph and S a shapes graph, a <a>results graph</a> for the
+			validation of <code>G</code> against S is a combination of some multiset
+			<code>{{ R1, ..., Rn}}</code> where <code>{ s1, ..., sn }</code> is the set of shapes in <code>S</code>
+			and <code>Ri</code> is a results graph
+			for the validation of <code>G</code> against si in S. A <a>validation report</a> for the
+			validation of <code>G</code> against S is a validation report for some results graph for
+			the validation of <code>G</code> against S.
+			A data graph <code>D</code> conforms to a shapes graph <code>S</code>
+			if and only there is a results graph for the validation of <code>D</code> against
+			<code>S</code> that contains no top-level validation results.
+		</p>
+	</section>
+	<section>
+		<h3>Conformance of a Data Graph against a Shape in a Shapes Graph</h3>
+		<p>
+			Given <code>G</code> a data graph and s a shape in S a shapes graph, a **results graph**
+			for the validation of <code>G</code> against s in S is a combination of some multiset {{
+			R1, ..., Rn }} where { t1, ..., tn } is the complete targets from <code>G</code> for s in
+			S and Ri is a results graph for the validation of ti using <code>G</code> against s in S.
+			A data graph <code>D</code> **conforms** to a shape s in a shapes graph S if and only
+			there is a results graph for the validation of <code>D</code> against s in S that
+			contains no top-level validation results.
+		</p>
+	</section>
+	<section>
+		<h3>Conformance of an RDF term in a Data Graph against a Shape in a Shapes Graph</h3>
+		<p>
+			Given <code>f</code> an RDF term, <code>D</code> a data graph, and s a shape in a shapes graph S a
+			**results graph** for the validation of <code>f</code> using <code>G</code> against s in S is a
+			combination of some multiset {{ R1, ..., Rn }} where { c1, ..., cn } is the
+			constraints of s in S, Ri is an element of results(f,V,D,ci,s,S), and <code>V</code> is
+			the value nodes of <code>f</code> with <code>D</code> for s in S. An RDF term and a data graph
+			<code>D</code>
+			**conforms** to a shape s in a shapes graph S if and only if there is a
+			results graph for the validation of the RDF term using <code>D</code> against s in S that
+			contains no top-level validation results.
+		</p>
+	</section>
+	<p>
+		Note that although there can be multiple possible results graphs for a
+		particular validation, if any results graph for the validation has no
+		top-level validation results they will all have no top-level validation
+		results.
+	</p>
+</section>
+
+<section id="core-constraint-components">
+	<h2>Constraint Components and Validation</h2>
+	<p>
+		This section defines the SHACL constraint components along with their
+		parameters and how they participate in validation.
+	</p>
+	<p>
+		Given an RDF term f, a set of RDF terms <code>V</code>, a data graph D, a constraint c,
+		and a shape s in a shapes graph S the possible **results of validating** f
+		and <code>v</code> with <code>D</code> against c in S, <code>results(f,V,D,c,s,S)</code>, is a set of results
+		structures as defined in this section.
+	</p>
+
+	<section id="ClassConstraintComponent">
+		<h3>sh:ClassConstraintComponent</h3>
+		<p>
+			<code>sh:ClassConstraintComponent</code> is a <a>constraint component</a> with mandatory
+			<a>parameter</a> <code>sh:class</code>.
+		</p>
+		<p>
+			A shape in an RDF graph with a value for <code>sh:class</code> in <code>G</code> that is not
+			an IRI is an <a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code><code>results(f,V,D,c,s,S)</code></code> where <code>c</code> has type
+			<code>sh:ClassConstraintComponent</code> and parameter values <code>&lt;sh:class,c&gt;</code>
+			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
+			for each <code>v</code> in <code>V</code> that is not a SHACL instance of <code>c</code> in <code>D</code>
+			and no other <a>top-level validation results</a>.
+
+		</p>
+
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<pre class="example-shapes">
+ex:ClassExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Bob, ex:Alice, ex:Carol ;</span>
+	sh:shape [
+		sh:path ex:knows ;
+		sh:class ex:Person ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:Alice a ex:Person .
+ex:Bob ex:knows ex:Alice .
+<span class="focus-node-error">ex:Carol</span> ex:knows ex:Bob .</pre>
+	</section>
+
+	<section id="DatatypeConstraintComponent">
+		<h3>sh:DatatypeConstraintComponent (todo)</h3>
+		<span class="todo">sh:DatatypeConstraintComponent and sh:NodeKindConstraintComponent are
+			similar to sh:ClassConstraintComponent </span>
+		<p><em>The remainder of this section is informative.</em></p>
+		<pre class="example-shapes" title="Shape with sh:datatype property constraint">
+ex:DatatypeExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Alice, ex:Bob, ex:Carol ;</span>
+	sh:shape [
+		sh:path ex:age ;
+		sh:datatype xsd:integer ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:Alice ex:age "23"^^xsd:integer .
+<span class="focus-node-error">ex:Bob</span> ex:age "twenty two" .
+<span class="focus-node-error">ex:Carol</span> ex:age "23"^^xsd:int .</pre>
+
+	</section>
+
+	<section id="NodeKindConstraintComponent">
+		<h3>sh:NodeKindConstraintComponent (todo)</h3>
+
+		<span class="todo">sh:DatatypeConstraintComponent and sh:NodeKindConstraintComponent are
+			similar to sh:ClassConstraintComponent </span>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<pre class="example-shapes">
+ex:NodeKindExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Bob, ex:Alice ;</span>
+	sh:shape [
+		sh:path ex:knows ;
+		sh:nodeKind ex:IRI ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:Bob ex:knows ex:Alice .
+<span class="focus-node-error">ex:Alice</span> ex:knows "Bob" .</pre>
+
+	</section>
+
+	<section id="MinCountConstraintComponent">
+		<h3>sh:MinCountConstraintComponent</h3>
+		<p>
+			sh:MinCountConstraintComponent is a <a>constraint component</a> with mandatory
+			parameter sh:minCount
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for sh:minCount in <code>G</code> that is not a
+			literal with datatype xsd:integer is an <a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			sh:MinCountConstraintComponent and parameter values &lt;sh:minCount,i&gt; contains
+			a single top-level validation result from f,D,c,s,S and no other top-level
+			validation results if the cardinality of <code>V</code> is less than the *literal value*
+			of i, and no top-level validation results otherwise.
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+		<pre class="example-shapes">
+ex:MinCountExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Alice, ex:Bob ;</span>
+	sh:shape [
+		sh:path ex:name ;
+		sh:minCount 1 ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:Alice ex:name "Alice" .
+<span class="focus-node-error">ex:Bob</span> ex:givenName "Bob"@en .</pre>
+	</section>
+
+
+	<section id="MaxCountConstraintComponent">
+		<h3>sh:MaxCountConstraintComponent (todo)</h3>
+		<p>
+
+			<span class="todo">sh:MaxCountConstraintComponent similar to sh:MinCountConstraintComponent</span>
+		</p>
+
+		<p><em>The remainder of this section is informative.</em></p>
+		<pre class="example-shapes">
+ex:MaxCountExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Bob ;</span>
+	sh:shape [
+		sh:path ex:birthDate ;
+		sh:maxCount 1 ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:Bob ex:birthDate "May 5th 1990" .</pre>
+
+	</section>
+
+
+	<section id="MinExclusiveConstraintComponent">
+		<h3>sh:MinExclusiveConstraintComponent</h3>
+		<p>
+			sh:MinExclusiveConstraintComponent is a <a>constraint component</a> with
+			mandatory parameter sh:minExclusive
+		</p>
+		<p>
+
+
+			A shape in an RDF graph <code>G</code> with a value for sh:minExclusive in <code>G</code> that is not
+			suitable for use in the SPARQL operator <code>&lt;</code> is an <a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			sh:MinExclusiveConstraintComponent and parameter values &lt;sh:minExclusive,i&gt;
+			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
+			for each <code>v</code> in <code>V</code> for which <code>m &lt; v</code> returns false or produces an error
+			in SPARQL and no other top-level validation results.
+		</p>
+
+	</section>
+
+	<section id="MinInclusiveConstraintComponent">
+		<h3>sh:MinInclusiveConstraintComponent (TODO)</h3>
+
+		<p><span class="todo">
+			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
+			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
+			are similar to sh:MinExclusiveConstraintComponent   </span>
+		</p>
+	</section>
+
+	<section id="MaxExclusiveConstraintComponent">
+		<h3>sh:MaxExclusiveConstraintComponent (TODO)</h3>
+
+		<p><span class="todo">
+			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
+			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
+			are similar to sh:MinExclusiveConstraintComponent   </span>
+		</p>
+	</section>
+
+	<section id="MaxInclusiveConstraintComponent">
+		<h3>sh:MaxInclusiveConstraintComponent (TODO)</h3>
+
+		<p><span class="todo">
+			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
+			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
+			are similar to sh:MinExclusiveConstraintComponent   </span>
+		</p>
+	</section>
+
+	<section id="sh:MinLengthConstraintComponent">
+		<h3>sh:MinLengthConstraintComponent (TODO)</h3>
+
+		<p><span class="todo">
+			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
+			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
+			are similar to sh:MinExclusiveConstraintComponent   </span>
+		</p>
+	</section>
+
+	<section id="sh:MaxLengthConstraintComponent">
+		<h3>sh:MaxLengthConstraintComponent (TODO)</h3>
+
+		<p><span class="todo">
+			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
+			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
+			are similar to sh:MinExclusiveConstraintComponent   </span>
+		</p>
+
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<pre class="example-shapes">
+ex:PasswordExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Bob, ex:Alice ;</span>
+	sh:shape [
+		sh:path ex:password ;
+		sh:minLength 8 ;
+		sh:maxLength 10 ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:Bob ex:password "123456789" .
+<span class="focus-node-error">ex:Alice</span> ex:password "1234567890ABC" .</pre>
+	</section>
+
+	<section id="sh:LanguageInConstraintComponent">
+		<h3>sh:LanguageInConstraintComponent (TODO)</h3>
+
+		<p> <span class="todo">
+		sh:LanguageInConstraintComponent are similar
+		to sh:MinExclusiveConstraintComponent</span>
+		</p>
+
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<p>
+			The following example shape states that all values of <code>ex:prefLabel</code>
+			can be either in English or Māori.
+		</p>
+		<pre class="example-shapes">
+ex:NewZealandLanguagesShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Mountain, ex:Berg ;</span>
+	sh:shape [
+		sh:path ex:prefLabel ;
+		sh:languageIn ( "en" "mi" ) ;
+	] .</pre>
+		<p>
+			From the example instances, <code>ex:Berg</code> will lead to constraint violations for all
+			of its labels.
+		</p>
+		<pre class="example-data">
+ex:Mountain
+	ex:prefLabel "Mountain"@en ;
+	ex:prefLabel "Hill"@en-NZ ;
+	ex:prefLabel "Maunga"@mi .
+
+<span class="focus-node-error">ex:Berg</span>
+	ex:prefLabel "Berg" ;
+	ex:prefLabel "Berg"@de ;
+	ex:prefLabel ex:BergLabel .</pre>
+
+	</section>
+
+
+	<section id="PatternConstraintComponent">
+		<h3>sh:PatternConstraintComponent</h3>
+
+		<p>
+
+			sh:PatternConstraintComponent is a <a>constraint component</a> with mandatory
+			parameter sh:pattern and optional parameter sh:flags
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for sh:pattern or sh:flags in <code>G</code> that
+			is not a literal with datatype xsd:string is an <a>ill-formed shape</a> in <code>G</code>.
+			A shape in an RDF graph <code>G</code> with more than one value for sh:pattern or
+			sh:flags in <code>G</code> is an <a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			sh:PatternConstraintComponent and mandatory parameter values &lt;sh:pattern,r&gt;
+			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
+			for each <code>v</code> in <code>V</code>
+			that is either a blank node or where the string representation (as
+			defined by the SPARQL str function) does not match the given regular
+			expression (as defined by the SPARQL REGEX function)
+			and no other top-level validation results.
+			If the constraint has optional parameter values &lt;sh:flags,flags&gt;
+			then flags is used as the third argument of the SPARQL REGEX function,
+			otherwise the third argument is the empty string.
+
+		</p>
+
+		<p><em>The remainder of this section is informative.</em></p>
+		<pre class="example-shapes">
+ex:PatternExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Bob, ex:Alice, ex:Carol ;</span>
+	sh:shape [
+		sh:path ex:bCode ;
+		sh:pattern "^B" ;    # starts with 'B'
+		sh:flags "i" ;       # Ignore case
+	] .</pre>
+		<pre class="example-data">
+ex:Bob ex:bCode "b101" .
+ex:Alice ex:bCode "B102" .
+<span class="focus-node-error">ex:Carol</span> ex:bCode "C103" .</pre>
+
+	</section>
+
+	<section id="UniqueLangConstraintComponent">
+		<h3>sh:UniqueLangConstraintComponent</h3>
+		<p>
+			sh:UniqueLangConstraintComponent is a <a>constraint component</a> with
+			mandatory parameter sh:uniqueLang
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for sh:uniqueLang in <code>G</code> that is not
+			"true"^^xsd:boolean is an <a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			sh:UniqueLangConstraintComponent and parameter values &lt;sh:uniqueLang,t&gt;
+			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
+			for each <code>v</code> in <code>V</code> that is is a language-tagged literal with the same language
+			tag as some other element of <code>V</code> and no other top-level validation results.
+
+		</p>
+
+		<p><em>The remainder of this section is informative.</em></p>
+
+
+		<pre class="example-shapes">
+ex:UniqueLangExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Alice, ex:Bob ;</span>
+	sh:shape [
+		sh:path ex:label ;
+		sh:uniqueLang true ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:Alice
+	ex:label "Alice" ;
+	ex:label "Alice"@en ;
+	ex:label "Alice"@fr .
+
+<span class="focus-node-error">ex:Bob</span>
+	ex:label "Bob"@en ;
+	ex:label "Bobby"@en .</pre>
+
+	</section>
+
+	<section id="EqualsConstraintComponent">
+		<h3>sh:EqualsConstraintComponent </h3>
+		<p>
+			sh:EqualsConstraintComponent is a <a>constraint component</a> with mandatory
+			parameter sh:equals
+
+			A shape in an RDF graph <code>G</code> with a value for sh:equals in <code>G</code> that is not an IRI
+			is an <a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			sh:EqualsConstraintComponent and parameter values &lt;sh:equals,p&gt;
+			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
+			for each <code>v</code> in <code>V</code> that is not a value of <code>f</code> for <code>p</code> in <code>D</code>
+			and for each value of <code>f</code> for <code>p</code> in <code>D</code> that is not in <code>V</code>
+			and no other top-level validation results.
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<pre class="example-shapes">
+ex:EqualExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Bob ;</span>
+	sh:shape [
+		sh:path ex:firstName ;
+		sh:equals ex:givenName ;
+	] .</pre>
+		<pre class="example-data">
+ex:Bob
+	ex:firstName "Bob" ;
+	ex:givenName "Bob" .</pre>
+
+	</section>
+
+	<section id="DisjointConstraintComponent">
+		<h3>sh:DisjointConstraintComponent </h3>
+		<p>
+
+			sh:DisjointConstraintComponent is a <a>constraint component</a> with mandatory
+			parameter sh:disjoint
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for sh:disjoint in <code>G</code> that is not an
+			IRI is an <a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			sh:DisjointConstraintComponent and parameter values &lt;sh:disjoint,p&gt;
+			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
+			for each <code>v</code> in <code>V</code> that is also a value of <code>f</code> for <code>p</code> in
+			<code>D</code>
+			and no other top-level validation results.
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<p>
+			The following example illustrates the use of <code>sh:disjoint</code> in a shape to specify
+			that certain focus nodes cannot share any values for <code>ex:prefLabel</code> and <code>ex:altLabel</code>.
+		</p>
+		<pre class="example-shapes">
+ex:DisjointExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:USA, ex:Germany ;</span>
+	sh:shape [
+		sh:path ex:prefLabel ;
+		sh:disjoint ex:altLabel ;
+	] .</pre>
+		<pre class="example-data">
+ex:USA
+	ex:prefLabel "USA" ;
+	ex:altLabel "United States" .
+
+<span class="focus-node-error">ex:Germany</span>
+	ex:prefLabel "Germany" ;
+	ex:altLabel "Germany" .</pre>
+
+	</section>
+
+	<section id="LessThanConstraintComponent">
+		<h3>sh:LessThanConstraintComponent (TODO)</h3>
+		<p>
+		<span class="todo">
+		sh:LessThanConstraintComponent and sh:LessThanOrEqualsConstraintComponent
+			are similar to sh:EqualsConstraintComponent                              </span>
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+	</section>
+
+	<section id="LessThanOrEqualsConstraintComponent">
+		<h3>sh:LessThanOrEqualsConstraintComponent (TODO)</h3>
+		<p>
+		<span class="todo">
+		sh:LessThanConstraintComponent and sh:LessThanOrEqualsConstraintComponent
+			are similar to sh:EqualsConstraintComponent                              </span>
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<p>
+			The following example illustrates the use of <code>sh:lessThan</code> in a shape to specify
+			that all values of <code>ex:startDate</code> are "before" the values of <code>ex:endDate</code>.
+		</p>
+		<pre class="example-shapes">
+ex:LessThanExampleShape
+	a sh:Shape ;
+	sh:shape [
+		sh:path ex:startDate ;
+		sh:lessThan ex:endDate ;
+	] .</pre>
+	</section>
+
+	<section id="ShapeConstraintComponent">
+		<h3>sh:ShapeConstraintComponent</h3>
+		<p>
+
+			sh:ShapeConstraintComponent is a <a>constraint component</a> with mandatory
+			parameter sh:shape
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for sh:shape in <code>G</code> that is not an IRI
+			or blank node is an <a>ill-formed shape</a> in <code>G</code>.
+			If s is the object of an RDF triple in an RDF graph <code>G</code> with
+			predicate sh:shape then s has **expected type** sh:shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where s is not recursive and c
+			has type sh:ShapeConstraintComponent and parameter values &lt;sh:shape,x&gt;
+			contains a different top-level validation result from <code> f,v,D,c,s,S </code> for each v
+			in <code>V</code> where <code>v</code> and <code>D</code> do not conform to x in S and no other top-level
+			validation results.
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<p>
+			In the following example, all values of the property <code>ex:someProperty</code> will validate with no
+			results for the shape
+			specified by a blank node that ensures that the property <code>ex:nestedProperty</code> has at least one
+			value.
+		</p>
+		<pre class="example-shapes">
+ex:ShapeExampleShape
+	a sh:Shape ;
+	sh:shape [
+		sh:path ex:someProperty ;
+		sh:shape [
+			a sh:Shape ;   # Optional
+			sh:shape [
+				sh:path ex:nestedProperty ;
+				sh:minCount 1 ;
+			]
+		]
+	] .</pre>
+
+		<pre class="example-data">
+ex:ShapeExampleValidResource
+	ex:someProperty [
+		ex:nestedProperty 42 ;
+	] .</pre>
+	</section>
+
+	<section id="NotConstraintComponent">
+		<h3>sh:NotConstraintComponent (TODO)</h3>
+		<p>
+			<span class="todo">sh:NotConstraintComponent is similar to sh:ShapeConstraintComponent</span>
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<p>
+			The following example illustrates the use of <code>sh:not</code> in a shape to specify the condition
+			that certain focus nodes cannot have any value of <code>ex:property</code>.
+		</p>
+		<pre class="example-shapes">
+ex:NotExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:InvalidInstance1 ;</span>
+	sh:not [
+		a sh:Shape ;
+		sh:shape [
+			sh:path ex:property ;
+			sh:minCount 1 ;
+		] ;
+	] .</pre>
+		<pre class="example-data">
+<span class="focus-node-error">ex:InvalidInstance1</span> ex:property "Some value" .</pre>
+
+	</section>
+
+	<section id="AndConstraintComponent">
+		<h3>sh:AndConstraintComponent </h3>
+		<p>
+
+			sh:AndConstraintComponent is a <a>constraint component</a> with mandatory
+			list-taking parameter sh:and
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for sh:and in <code>G</code> that is not a SHACL
+			list in <code>G</code> whose members in <code>G</code> are all IRIs or blank nodes in <code>G</code> is an
+			<a>ill-formed shape</a> in <code>G</code>.
+			If s is a member of a SHACL list in an RDF graph <code>G</code> that is the object of an
+			RDF triple in <code>G</code> with predicate sh:and then s has **expected type** sh:shape
+			in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where s is not recursive and c
+			has type sh:AndConstraintComponent and parameter values &lt;sh:and,l&gt; contains
+			a different top-level validation result from <code> f,v,D,c,s,S </code> for each <code>v</code> in
+			<code>V</code>
+			where <code>v</code> and <code>D</code> do not conform to each element of l in S and no other
+			top-level validation results.
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<p>
+			The following example illustrates the use of <code>sh:and</code> in a shape to specify the condition
+			that certain focus nodes have exactly one value of <code>ex:property</code>.
+			This is achieved via the conjunction of a separate named shape (<code>ex:SuperShape</code>) which specifies
+			the minimum count, and a blank node shape that additionally specifies the maximum count.
+			As shown here, <code>sh:and</code> can be used to implement a specialization mechanism between shapes.
+		</p>
+		<pre class="example-shapes">
+ex:SuperShape
+	a sh:Shape ;
+	sh:shape [
+		sh:path ex:property ;
+		sh:minCount 1 ;
+	] .
+
+ex:ExampleAndShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:ValidInstance, ex:InvalidInstance ;</span>
+	sh:and (
+		ex:SuperShape
+		[
+			a sh:Shape ;
+			sh:shape [
+				sh:path ex:property ;
+				sh:maxCount 1 ;
+			]
+		]
+	) .</pre>
+
+		<pre class="example-data">
+ex:ValidInstance
+	ex:property "One" .
+
+# Invalid: more than one property
+<span class="focus-node-error">ex:InvalidInstance</span>
+	ex:property "One" ;
+	ex:property "Two" .</pre>
+	</section>
+
+	<section id="OrConstraintComponent">
+		<h3>sh:OrConstraintComponent (TODO)</h3>
+		<p>
+			<span class="todo">sh:OrConstraintComponent is similar to sh:AndConstraintComponent</span>
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+	</section>
+
+	<section id="QualifiedValueShapeConstraintComponent">
+		<h3>sh:QualifiedValueShapeConstraintComponent </h3>
+		<p>
+
+			sh:QualifiedValueShapeConstraintComponent is a <a>constraint component</a>
+			with mandatory parameter sh:qualifiedValueShape and optional parameters
+			sh:qualifiedMinCount and sh:qualifiedMaxCount
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for sh:qualifiedValueShape in <code>G</code> that
+			is not an IRI or blank node is an <a>ill-formed shape</a> in <code>G</code>.
+			A shape in an RDF graph <code>G</code> with a value for sh:qualifiedMinCount or
+			sh:qualifiedMaxCount in <code>G</code> that is not a literal with dataype xsd:integer is
+			an <a>ill-formed shape</a> in <code>G</code>.
+			A shape in an RDF graph <code>G</code> with more than one value for
+			sh:qualifiedValueShape, sh:qualifiedMinCount, or sh:qualifiedMaxCount in <code>G</code>
+			is an <a>ill-formed shape</a> in <code>G</code>.
+			A shape in an RDF graph <code>G</code> that has a value for sh:qualifiedValueShape in <code>G</code>
+			but no value for sh:qualifiedMinCount in <code>G</code> and no value for
+			sh:qualifiedMaxCount in <code>G</code> is an <a>ill-formed shape</a> in <code>G</code>.
+			If s is the object of an RDF triple in an RDF graph <code>G</code> with predicate
+			sh:qualifiedValueShape then s has **expected type** sh:shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where s is not recursive and c
+			has type sh:QualifiedValueShapeConstraintComponent and mandatory parameter
+			values &lt;sh:qualifiedValueShape,x&gt;
+			contains a single top-level validation result from f,D,c,s,S
+			and no other top-level validation results
+			if the number of elements <code>v</code> of <code>V</code> where where <code>v</code> and <code>D</code>
+			conform
+			to
+			x in S is less than the value of min if &lt;sh:qualifiedMinCount,min&gt; is in the
+			optional parameters of the constraint or is greater than the value of max if
+			&lt;sh:qualifiedMaxCount,max&gt; is in the optional parameters of the constraint,
+			and no top-level validation results otherwise.
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<p>
+			In the following example shape can be used to specify the condition that the property <code>ex:parent</code>
+			has exactly two values,
+			and at least one of them is female.
+		</p>
+		<pre class="example-shapes">
+ex:QualifiedValueShapeExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:QualifiedValueShapeExampleValidResource ;</span>
+	sh:shape [
+		sh:path ex:parent ;
+		sh:minCount 2 ;
+		sh:maxCount 2 ;
+		sh:qualifiedValueShape [
+			a sh:Shape ;   # Optional
+			sh:shape [
+				sh:path ex:gender ;
+				sh:hasValue ex:female ;
+			]
+		] ;
+		sh:qualifiedMinCount 1 ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:QualifiedValueShapeExampleValidResource
+	ex:parent ex:John ;
+	ex:parent ex:Jane .
+
+ex:John
+	ex:gender ex:male .
+
+ex:Jane
+	ex:gender ex:female .</pre>
+	</section>
+
+	<section id="ClosedConstraintComponent">
+		<h3>sh:ClosedConstraintComponent </h3>
+		<p>
+
+			sh:ClosedConstraintComponent is a <a>constraint component</a> with mandatory
+			parameter sh:closed and optional list-taking parameter sh:ignoredProperties
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for sh:closed in <code>G</code> that is not
+			"true"^^xsd:boolean is an <a>ill-formed shape</a> in <code>G</code>.
+			A shape in an RDF graph <code>G</code> with a value for sh:ignoredProperties in <code>G</code> that is
+			not a SHACL list in <code>G</code> whose members in <code>G</code> are all IRIs is an **ill-formed
+			shape** in <code>G</code>.
+			A shape in an RDF graph <code>G</code> with more than one value for sh:closed or
+			sh:ignoredProperties in <code>G</code> is an <a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			sh:ClosedConstraintComponent and mandatory parameter values &lt;sh:closed,t&gt;
+			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
+			for each RDF triple in <code>D</code> with subject f
+			whose predicate is
+			not a value of some value of s for sh:shape in <code>D</code> for <code>sh:path</code> in <code>D</code>
+			and not a member of i in <code>D</code> if the constraint has
+			optional parameter values &lt;sh:ignoredProperties,i&gt;
+			and no other top-level validation results.
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<p>
+			The following example illustrates the use of <code>sh:closed</code> in a shape to specify the condition
+			that certain focus nodes only have values for <code>ex:exampleProperty1</code> and
+			<code>ex:exampleProperty2</code>.
+			The "ignored" property <code>rdf:type</code> would also be allowed.
+		</p>
+		<pre class="example-shapes">
+ex:ClosedShapeExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Alice, ex:Bob ;</span>
+	sh:closed true ;
+	sh:ignoredProperties (rdf:type) ;
+	sh:shape [
+		sh:path ex:firstName ;
+	] ;
+	sh:shape [
+		sh:path ex:lastName ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:Alice
+	ex:firstName "Alice" .
+
+<span class="focus-node-error">ex:Bob</span>
+	ex:firstName "Bob" ;
+	ex:middleInitial "J" .</pre>
+
+	</section>
+
+	<section id="HasValueConstraintComponent">
+		<h3>sh:HasValueConstraintComponent </h3>
+		<p>
+
+			sh:HasValueConstraintComponent is a <a>constraint component</a> with mandatory
+			parameter sh:hasValue.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			sh:HasValueConstraintComponent and mandatory parameter values
+			&lt;sh:hasValue,x&gt; contains a single top-level validation result from f,D,c,s,S
+			and no other top-level validation results if x is not in <code>V</code>, and no top-level
+			validation results otherwise.
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<pre class="example-shapes">
+ex:StanfordGraduate
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Alice ;</span>
+	sh:shape [
+		sh:path ex:alumniOf ;
+		sh:hasValue ex:Stanford ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:Alice
+	ex:alumniOf ex:Harvard ;
+	ex:alumniOf ex:Stanford .</pre>
+
+	</section>
+
+	<section id="InConstraintComponent">
+		<h3>sh:InConstraintComponent </h3>
+		<p>
+
+			sh:InConstraintComponent is a <a>constraint component</a> with mandatory
+			list-taking parameter sh:in.
+		</p>
+		<p>
+			A shape in an RDF graph <code>G</code> with a value for sh:in in <code>G</code> that is not a SHACL
+			list in <code>G</code> whose members in <code>G</code> are all IRIs or blank nodes in <code>G</code> is an
+			<a>ill-formed shape</a> in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			sh:InConstraintComponent and parameter values &lt;sh:in,x&gt; contains
+			a different top-level validation result from <code> f,v,D,c,s,S </code> for each <code>v</code> in
+			<code>V</code>
+			where <code>v</code> is not a member of x in S
+			and no other top-level validation results.
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+		<pre class="example-shapes">
+ex:InExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:RainbowPony ;</span>
+	sh:shape [
+		sh:path ex:color ;
+		sh:in ( ex:Pink ex:Purple ) ;
+	] .</pre>
+
+		<pre class="example-data">
+ex:RainbowPony ex:color ex:Pink .</pre>
+
+	</section>
+</section>
+
+<section>
+	<h2>SHACL Processors</h2>
+	<p>
+		A SHACL processor MUST provide an interface that takes two RDF graphs---a
+		data graph and a potential shapes graph. If the potential shapes graph is
+		not a shapes graph the processor MUST signal an error. If the potential
+		shapes graph is recursive the behaviour of the processor is not fully
+		defined. Processors MAY signal an error if the potential shapes graph is
+		recursive. Otherwise, unless the processor encounters a failure, it MUST
+		create some representation of an RDF graph that is a validation report for
+		the validation of the data graph against the potential shapes graph and
+		return the representation or a location from which the representation can be
+		retrieved. The representation can be a document in a syntax for RDF graphs,
+		such as Turtle, or an RDF graph stored in a graph repository.
+	</p>
+	<p>
+		A SHACL processor SHOULD provide an interface similar to above except that
+		any return value is a boolean indicating whether the data graph conforms to
+		the potential shapes graph.
+	</p>
+	<p>
+		A SHACL processor MAY provide interfaces where the shapes graph is
+		constructed by accessing locations that are values of RDF triples with
+		predicate sh:shapesGraph in the data graph. A SHACL processor MAY provide
+		interfaces that construct the potential shapes graph by taking a partial
+		shapes graph and merging in other graphs accessible at locations that are
+		values of RDF triples with predicate owl:imports in the potential shapes
+		graph being consructed.
+	</p>
+	<p>
+		If a SHACL processor accesses persistent representations of RDF graphs to
+		validate a data graph against a potential shapes graph it MUST not change
+		any of these representations. A SHACL processor MAY store any
+		representation of a validation report that it constructs so long as the
+		processor does not not violate the previous requirement.
+	</p>
+</section>
+
+
+<section id="ack" class="appendix informative">
+	<h2>Acknowledgements</h2>
+	<p>
+		Many people contributed to this specification, including members of the RDF Data Shapes Working Group.
+		We especially thank the following:
+	</p>
+	<p>
+		Arnaud Le Hors (chair),
+		Jim Amsden,
+		Iovka Boneva,
+		Karen Coyle,
+		Richard Cyganiak,
+		Michel Dumontier,
+		Holger Knublauch,
+		Dimitris Kontokostas,
+		Jose Labra,
+		Peter Patel-Schneider,
+		Eric Prud'hommeaux,
+		Arthur Ryman (who also served as a co-editor until Feb 2016),
+		Harold Solbrig,
+		Simon Steyskal,
+		Ted Thibodeau
+	</p>
+</section>
+</body>
+
+<script type="text/javascript">
+
+    tooltip = "Targets are not the only way to initiate validation, SHACL also allows specific nodes to be validated against specific shapes.";
+    var t = document.getElementsByClassName("target-can-be-skipped");
+    for (var i = 0; i < t.length; i++) {
+        t[i].title = tooltip;
+    }
+</script>
+
+</html>
