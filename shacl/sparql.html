@@ -285,7 +285,7 @@
 <section id="abstract">
 	<p>
 		This document defines SHACL-SPARQL, the SPARQL extension of the SHACL Shapes Constraint Language.
-		SHACL-SPARQL provides mechanisms to go beyond the Core vocabulary and represent
+		SHACL-SPARQL provides mechanisms to extend the SHACL vocabulary and represent
 		SPARQL-based constraints and user-defined constraint components.
 
 	</p>
@@ -297,16 +297,12 @@
 <section class="introductory">
 	<h2>Document Outline</h2>
 	<p>
-		This document covers SHACL-SPARQL, the SPARQL extension of the SHACL Shapes Constraint Language.
-	</p>
-	<p>
-		SHACL-SPARQL is is Full, an extension of SHACL Core that includes SPARQL-based constraints and user defined
-		constraint
-		components is defined in <span class="todo">link to document</span>.
+		This document covers SHACL-SPARQL, the SPARQL extension of the SHACL Shapes Constraint Language that can be used to define SPARQL-based constraints and user defined
+		constraint components.
 	</p>
 	<p>
 		The examples in this document use Turtle [[!turtle]].
-		The reader should be familiar with <span class="todo">SHACL [[!shacl]]</span> and with SPARQL
+		The reader should be familiar with SHACL [[!shacl]] and with SPARQL
 		[[!sparql11-overview]].
 	<p>
 	</p>
@@ -316,12 +312,13 @@
 	<h2>Introduction</h2>
 
 	<section id="conformance">
-		<p>
-			<span class="todo">TODO: needs more work.</span>
-		</p>
+
 		<p>
 			This specification describes conformance criteria <strong>SHACL SPARQL processors</strong>.
 		<p>
+		<p>
+			<span class="todo">TODO: more?</span>
+		</p>
 			<span class="todo">TODO: link to test cases.</span>
 		</p>
 	</section>
@@ -395,7 +392,7 @@
 	# This box represents an output results graph</pre>
 
 		<p>
-			SHACL Definitions appear in blue boxes:
+			SHACL or SPARQL Definitions appear in blue boxes:
 		</p>
 		<div class="def def-sparql">
 			<div class="def-header">DEFINITIONS</div>
@@ -454,9 +451,9 @@
 
 
 <section id="sparql-constraints">
-	<h2>shs:SPARQLConstraintComponent</h2>
+	<h2>shs:SparqlSelectConstraintComponent</h2>
 	<p>
-		shs:SPARQLConstraintComponent is a special <a>constraint component</a> with mandatory
+		shs:SparqlSelectConstraintComponent is a special <a>constraint component</a> with mandatory
 		parameter shs:sparql.
 	</p>
 	<p>
@@ -535,7 +532,7 @@ ex:LanguageExampleShape
 		sh:focusNode ex:InvalidCountry ;
 		sh:resultPath ex:germanLabel ;
 		sh:value "Spain"@en ;
-		sh:sourceConstraintComponent shs:SPARQLConstraintComponent ;
+		sh:sourceConstraintComponent shs:SparqlSelectConstraintComponent ;
 		sh:sourceShape ex:LanguageExampleShape ;
 		# ...
 	] .</pre>
@@ -829,7 +826,7 @@ ex:ExampleValueResource
 		sh:resultPath ex:property1 ;
 		sh:value ex:ExampleIntermediateResource ;
 		sh:resultMessage "The message." ;
-		sh:sourceConstraintComponent shs:SPARQLConstraintComponent ;
+		sh:sourceConstraintComponent shs:SparqlSelectConstraintComponent ;
 		sh:sourceShape ex:ShapeWithPathViolationExample ;
 		ex:time "2015-03-27T10:58:00"^^xsd:dateTime ;  # Example
 	] .</pre>
@@ -839,7 +836,7 @@ ex:ExampleValueResource
 <section id="sparql-constraint-components">
 	<h2>SPARQL-based Constraint Components</h2>
 	<p>
-		shs:SPARQLConstraintComponent, as introduced in the previous section provide a lot of flexibility.
+		<code>shs:SparqlSelectConstraintComponent</code>, as introduced in the previous section provide a lot of flexibility.
 		However, SPARQL-based constraints may be hard to understand for some people or lead to repetition.
 		<a>SPARQL-Based Constraint components</a> are a way to abstract the complexity of SPARQL and to declare high level
 		reusable constraint components, similar to the <a href="#constraints">Core constraint components</a>.
@@ -920,7 +917,7 @@ shimpl:hasPattern
 		<p>
 			The class <code>shs:Parameter</code> is defined as a <a>SHACL subclass</a> of
 			<code>shs:PropertyConstraint</code>,
-			and all properties that are applicable to property constraints may also be used for parameters.
+			and all properties that are applicable to <span class="todo">property constraints</span> may also be used for parameters.
 			This includes descriptive properties such as <code>sh:name</code> and <code>sh:description</code>
 			but also constraint parameters such as <code>sh:class</code>.
 			Some implementations MAY use these constraint parameters to prevent the execution of constraint
@@ -953,14 +950,14 @@ shimpl:hasPattern
 	<section id="constraint-components-validators">
 		<h3>Validators</h3>
 		<p>
-			For every supported context (i.e., <a>property constraint</a> or <a>shape</a>)
+			For every supported context (i.e., <span class="todo">property constraints</span> or <a>shape</a>)
 			the constraint component declares a suitable <a>validator</a>.
 			For a given constraint, a validator is selected from the constraint component using the following rules,
 			in order:
 		</p>
 		<ol>
 			<li>For <a>shapes</a>, use one of the values of <code>shs:shapeSelfValidator</code>, if present.</li>
-			<li>For <a>property constraints</a>, use one of the values of <code>shs:shapePathValidator</code>, if
+			<li>For <span class="todo">property constraints</span>, use one of the values of <code>shs:shapePathValidator</code>, if
 				present.
 			</li>
 			<li>Otherwise, use one of the values of <code>shs:validator</code>.
@@ -1040,11 +1037,11 @@ ex:LanguageExampleShape
 				The example shape above specifies the condition that all values of <code>ex:germanLabel</code> carry
 				the language tag <code>de</code>
 				while all values of <code>ex:englishLabel</code> have <code>en</code> as their language.
-				These details are specified via two property constraints that have values for the
+				These details are specified via two <span class="todo">property constraints</span> that have values for the
 				<code>ex:lang</code> parameter required by the constraint component.
 			</p>
 			<p>
-				SELECT queries used in the context of <a>property constraints</a> use a special variable named
+				SELECT queries used in the context of <span class="todo">property constraints</span> use a special variable named
 				<code>PATH</code> as a placeholder for the predicate or path
 				used by the constraint.
 				The only legal use of this variable is in the <a>predicate</a> position of a <a
@@ -1054,7 +1051,7 @@ ex:LanguageExampleShape
 			<p id="SPARQLSelectValidator-evaluation">
 				A SHACL-SPARQL processor executes the provided SPARQL query on the data graph to produce validation
 				results.
-				In the context of <a>property constraints</a>, the SHACL-SPARQL processor will first substitute all
+				In the context of <span class="todo">property constraints</span>, the SHACL-SPARQL processor will first substitute all
 				occurrences of the variable <code>PATH</code>
 				with the provided <a>property path</a> derived from the value of <code>sh:path</code> in the constraint.
 				The resulting SPARQL query is then evaluated with the same <a>pre-bound variables</a>
@@ -1082,7 +1079,7 @@ ex:LanguageExampleShape
 				Many constraint components are of the form in which all <a>value nodes</a> are tested individually
 				against some boolean condition.
 				Writing SELECT queries for these becomes burdensome, especially if a constraint component can be
-				used for both <a>property constraints</a> and <a>shapes</a>.
+				used for both <span class="todo">property constraints</span> and <a>shapes</a>.
 				SHACL-SPARQL provides an alternative, more compact syntax for validators based on ASK queries.
 				This type of validators can be used as values of the property <code>shs:validator</code>.
 			</p>
@@ -1207,16 +1204,11 @@ ex:hasLang
 				through the <a href="#constraint-components-parameter-pre-binding">component parameters</a></li>
 		</ol>
 		<p>
-			The variable <code>PATH</code> has a special treatment in SHACL property constraint components and MUST
+			The variable <code>PATH</code> has a special treatment in SHACL <span class="todo">property constraint</span> components and MUST
 			be processed before any other pre-bound variable.
 			SHACL-SPARQL processors MUST perform string substitution of every occurrence of the variable
 			<code>PATH</code> to the <a href="#path-syntax">generated SPARQL property path</a> before performing any
 			pre-binding.
-		</p>
-		<p>
-			The variable <code>predicate</code> is not a pre-bound variable in SHACL and will be treated as a normal
-			SPARQL variable.
-			<span class="todo">Should we disallow the variable predicate instead to avoid confusion?</span>
 		</p>
 	</section>
 
