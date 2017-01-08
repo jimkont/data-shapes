@@ -439,47 +439,20 @@
 			make a some situation true in this document then the situation is false.
 		</p>
 
-		<div class="def" id="rdf-terminology">
-			<div class="term-def-header">Basic RDF Terminology</div>
-			<div>
-				This document uses the terms
-				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-graph"><dfn
-						data-lt="graph|graphs|RDF graphs">RDF graph</dfn></a>,
-				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple"><dfn data-lt="triple|triples">RDF
-					triple</dfn></a>,
-				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri"><dfn data-lt="IRI|IRIs">IRI</dfn></a>,
-				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal"><dfn data-lt="literal|literals">literal</dfn></a>,
-				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node"><dfn
-						data-lt="blank node|blank nodes">blank node</dfn></a>,
-				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-node"><dfn data-lt="node|nodes">node</dfn></a>
-				of an RDF graph,
-				<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term"><dfn>RDF term</dfn></a>, and
-				<a href="https://www.w3.org/TR/rdf11-concepts/#dfn-subject"><dfn
-						data-lt="subject|subjects">subject</dfn></a>,
-				<a href="https://www.w3.org/TR/rdf11-concepts/#dfn-predicate"><dfn
-						data-lt="predicate|predicates">predicate</dfn></a>, and
-				<a href="https://www.w3.org/TR/rdf11-concepts/#dfn-object"><dfn
-						data-lt="object|objects">object</dfn></a> of RDF triples, and
-				<a href="https://www.w3.org/TR/rdf11-concepts/#dfn-datatype"><dfn
-						data-lt="datatypes">datatype</dfn></a>
-				as defined in RDF 1.1 Concepts and Abstract Syntax [[!rdf11-concepts]].
-			</div>
-		</div>
-
 		<div class="def">
 			<div class="term-def-header">Path</div>
 			<div>
-				A <dfn>path</dfn> in an <a>RDF graph</a> <code>G</code> from <a>RDF term</a> <code>n</code> to RDF term
+				A <dfn>path</dfn> in an <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-graph">RDF graph</a> <code>G</code> from <a  href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term">RDF term</a> <code>n</code> to RDF term
 				m is a sequence
-				of <a>RDF triples</a> in <code>G</code> such that the <a>subject</a> of the first RDF triple is n,
-				the <a>object</a> of the last RDF triple is <code>m</code>, and the object of each RDF triple
+				of <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple">RDF triples</a> in <code>G</code> such that the <a  href="https://www.w3.org/TR/rdf11-concepts/#dfn-subject">subject</a> of the first RDF triple is n,
+				the <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-object">object</a> of the last RDF triple is <code>m</code>, and the object of each RDF triple
 				except the last is the subject of the next.
 			</div>
 		</div>
 		<div class="def">
 			<div class="term-def-header">Property</div>
 			<div>
-				A <dfn>property</dfn> is an <a>IRI</a>.
+				A <dfn>property</dfn> is an <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a>.
 			</div>
 		</div>
 		<div class="def">
@@ -502,8 +475,7 @@
 		<div class="def">
 			<div class="term-def-header">SHACL List</div>
 			<div>
-				A <dfn data-lt="SHACL lists">SHACL list</dfn> in an RDF graph <code>G</code> is an IRI or a <a>blank
-				node</a> that is
+				A <dfn data-lt="SHACL lists">SHACL list</dfn> in an RDF graph <code>G</code> is an IRI or a <a  href="http://www.w3.org/TR/rdf11-concepts/#dfn-node">blank node</a> that is
 				either <code>rdf:nil</code> (provided that <code>rdf:nil</code> has no value for either
 				<code>rdf:first</code>
 				or
@@ -678,7 +650,7 @@ SHACL Property path: [ sh:alternativePath ( ex:father ex:mother  ) ]</pre>
 	<section class="informative">
 		<h3>SHACL Example (TODO)</h3>
 		<p>
-			The following example <a>data graph</a> contains three <a>SHACL instances</a> of the <a>class</a> <code>ex:Person</code>.
+			The following example <a>data graph</a> contains three <a>SHACL instances</a> of the class <code>ex:Person</code>.
 		</p>
 		<pre class="example-data">
 ex:Alice
@@ -700,15 +672,15 @@ ex:Calvin
 		<p>
 		<ul>
 			<li>
-				A <a>SHACL instance</a> of <code>ex:Person</code> can have at most one <a>value</a> for the property
+				A <a>SHACL instance</a> of <code>ex:Person</code> can have at most one value for the property
 				<code>ex:ssn</code>,
-				and this <a>value</a> is a <a>literal</a> with the datatype <code>xsd:string</code> that matches
+				and this value is a <a>literal</a> with the datatype <code>xsd:string</code> that matches
 				a specified regular expression.
 			</li>
 			<li>
-				A <a>SHACL instance</a> of <code>ex:Person</code> can have unlimited <a>values</a> for the property
+				A <a>SHACL instance</a> of <code>ex:Person</code> can have unlimited values for the property
 				<code>ex:child</code>,
-				and these <a>values</a> are <a>IRIs</a> and <a>SHACL instances</a> of <code>ex:Person</code>.
+				and these values are IRIs and <a>SHACL instances</a> of <code>ex:Person</code>.
 			</li>
 			<li>
 				A person's parents are represented using the property <code>ex:child</code> in the inverse direction.
@@ -717,7 +689,7 @@ ex:Calvin
 				where the <a>predicate</a> is <code>ex:child</code>.
 			</li>
 			<li>
-				A <a>SHACL instance</a> of <code>ex:Person</code> cannot have <a>values</a> for any other property apart
+				A <a>SHACL instance</a> of <code>ex:Person</code> cannot have values for any other property apart
 				from
 				<code>ex:ssn</code>, <code>ex:child</code> and <code>rdf:type</code>.
 			</li>
@@ -750,24 +722,24 @@ ex:PersonShape
 	sh:ignoredProperties (    <code>rdf:type</code> ) .</pre>
 		<p>
 			We can use the shape declaration above to illustrate some of the key terminology used by SHACL.
-			The <a>focus nodes</a> for the <a>shape</a> <code>ex:PersonShape</code> are all <a>SHACL instances</a> of
-			the <a>class</a> <code>ex:Person</code>.
-			These <a>focus nodes</a> are the <a>targets</a> of the <a>shape</a> and are specified using the property
+			The focus nodes for the <a>shape</a> <code>ex:PersonShape</code> are all <a>SHACL instances</a> of
+			the class <code>ex:Person</code>.
+			These focus nodes are the <a>targets</a> of the <a>shape</a> and are specified using the property
 			<code>sh:targetClass</code>.
 			The <a>shape</a> has three <a>property constraints</a> with the property <code>sh:shape</code>,
 			one of which uses a <a>path</a> expression.
-			The <a>shape</a> itself is also a constraint on the <a>focus nodes</a> using the <a>parameters</a> <code>sh:closed</code>
+			The <a>shape</a> itself is also a constraint on the focus nodes using the <a>parameters</a> <code>sh:closed</code>
 			and <code>sh:ignoredProperties</code>.
 		</p>
 		<p>
-			Some of the <a>property constraints</a> specify parameters from multiple <a>constraint components</a> in
+			Some of the property constraints specify parameters from multiple <a>constraint components</a> in
 			order to
-			restrict multiple aspects of the <a>property values</a>.
+			restrict multiple aspects of the property values.
 			For example, in the <a>property constraint</a> for <code>ex:ssn</code>, parameters from three <a>constraint
 			components</a> are used.
 			The <a>parameters</a> of these <a>constraint components</a> are <code>sh:datatype</code>,
 			<code>sh:pattern</code> and <code>sh:maxCount</code>.
-			For each <a>focus node</a> the <a>property values</a> of <code>ex:ssn</code> will be validated against all
+			For each focus node< the property values of <code>ex:ssn</code> will be validated against all
 			three components.
 			The constraint on the inverse property values of <code>sh:child</code> uses only one <a>constraint
 			component</a> identified by the <code>sh:maxCount</code> <a>parameter</a>.
@@ -808,10 +780,10 @@ ex:PersonShape
 	] .</pre>
 		<p>
 			The <a>validation results</a> are enclosed in a <a>validation report</a>.
-			The first <a>validation result</a> is produced because <code>ex:Alice</code> has a <a>value</a> for <code>ex:ssn</code>
+			The first <a>validation result</a> is produced because <code>ex:Alice</code> has a value for <code>ex:ssn</code>
 			that does not match the regular expression specified by the property <code>sh:regex</code>.
 			The second <a>validation result</a> is produced because <code>ex:Bob</code> has more than the permitted
-			number of <a>values</a>
+			number of values
 			for the property <code>ex:ssn</code> as specified by the <code>sh:maxCount</code> of 1.
 			The third <a>validation result</a> is produced because the <a>shape</a> <code>ex:PersonShape</code> has the
 			the property <code>sh:closed</code> set to <code>true</code>
@@ -867,7 +839,7 @@ ex:PersonShape
 	<ul>
 		<li>It has <code>sh:ValidationResult</code> as a value for <code>rdf:type</code> in <code>G</code>
 		</li>
-		<li>Its sole <a>value</a> for <code>sh:focusNode</code> in <code>G</code> is f
+		<li>Its sole value for <code>sh:focusNode</code> in <code>G</code> is f
 		</li>
 		<li>Its sole value for <code>sh:valueNode</code> in <code>G</code> is <code>v</code> if <code>v</code> is
 			present,
@@ -883,7 +855,7 @@ ex:PersonShape
 		</li>
 		<li>Its sole value for sh:resultSeverity in <code>G</code> is the severity of s in S
 		</li>
-		<li>Its <a>values</a>, if any, for <code>p</code> in <code>G</code> with <code>p</code> a non-list-taking
+		<li>Its values, if any, for <code>p</code> in <code>G</code> with <code>p</code> a non-list-taking
 			parameter of C
 			and <code>X = { x | &lt;p,x&gt; is a parameter value of c }</code> are the elements of X
 		</li>
@@ -978,7 +950,7 @@ ex:PersonShape
 		</p>
 		<p>
 			For a constraint component C with mandatory parameters p1, ..., pn a shape s
-			in a shapes graph S has a <dfn>constraint</dfn> of type C with <dfn>mandatory
+			in a shapes graph S has a <dfn data-lt="constraints">constraint</dfn> of type C with <dfn>mandatory
 			parameter values</dfn> <code>&lt;p1,v1&gt;, ..., &lt;pn,vn&gt;</code> in S when s has vi as a value for
 			pi in S. If s in S has a constraint of type C in S then the <dfn>optional
 			parameter values</dfn> of the constraint in S are all the &lt;oi,vi&gt; where oi is an
@@ -1127,7 +1099,7 @@ ex:TargetSubjectsOfExampleShape
 ex:Bob ex:livesIn ex:NewYork .</pre>
 			<p>
 				In the example above, only <code>ex:Alice</code> is validated against the given shape,
-				because it is the <a>subject</a> of a <a>triple</a> that has <code>ex:knows</code> as its
+				because it is the subject of a <a>triple</a> that has <code>ex:knows</code> as its
 				<a>predicate</a>.
 			</p>
 		</section>
