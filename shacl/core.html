@@ -435,21 +435,16 @@
 			make a some situation true in this document then the situation is false.
 		</p>
 
-		<div class="def">
+		<!--div class="def">
 			<div class="term-def-header">Path</div>
 			<div>
-				A <dfn>path</dfn> in an <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-graph">RDF graph</a>
 				<code>G</code> from <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term">RDF term</a>
-				<code>n</code> to RDF term
-				m is a sequence
+
 				of <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple">RDF triples</a> in <code>G</code> such
 				that the <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-subject">subject</a> of the first RDF triple
-				is n,
-				the <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-object">object</a> of the last RDF triple is
-				<code>m</code>, and the object of each RDF triple
-				except the last is the subject of the next.
+
 			</div>
-		</div>
+		</div-->
 		<div class="def">
 			<div class="term-def-header">Property</div>
 			<div>
@@ -460,7 +455,7 @@
 			<div class="term-def-header">Value</div>
 			<div>
 				An RDF term <code>n</code> has <dfn>value</dfn> <code>v</code> for property <code>p</code> in an
-				RDF graph <code>G</code> if there is
+				<ahref="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-graph">RDF graph</div> <code>G</code> if there is
 				an RDF triple in <code>G</code> with subject <code>n</code>, predicate <code>p</code>, and
 				object <code>v</code>.
 
@@ -529,7 +524,7 @@
 		<section id="shacl-property-path">
 			<h3><dfn data-lt="SHACL Property Path">SHACL Property Paths</dfn></h3>
 			<p>
-				A blank node is an <dfn>ill-formed property path</dfn> in an RDF graph <code>G</code> if it has
+				A blank node is an <dfn data-lt="ill-formed property paths">ill-formed property path</dfn> in an RDF graph <code>G</code> if it has
 				a value for more than one of
 				<code>rdf:first</code>,
 				<code>sh:alternativePath</code>,
@@ -677,7 +672,7 @@ ex:Calvin
 			<li>
 				A <a>SHACL instance</a> of <code>ex:Person</code> can have at most one value for the property
 				<code>ex:ssn</code>,
-				and this value is a <a>literal</a> with the datatype <code>xsd:string</code> that matches
+				and this value is a literal with the datatype <code>xsd:string</code> that matches
 				a specified regular expression.
 			</li>
 			<li>
@@ -688,8 +683,8 @@ ex:Calvin
 			<li>
 				A person's parents are represented using the property <code>ex:child</code> in the inverse direction.
 				A <a>SHACL instance</a> of <code>ex:Person</code> can have at most 2 parents, i.e. can be the
-				<a>object</a> of at most two <a>triples</a>
-				where the <a>predicate</a> is <code>ex:child</code>.
+				<a  href="https://www.w3.org/TR/rdf11-concepts/#dfn-object">object</a> of at most two <a>triples</a>
+				where the predicate is <code>ex:child</code>.
 			</li>
 			<li>
 				A <a>SHACL instance</a> of <code>ex:Person</code> cannot have values for any other property apart
@@ -729,7 +724,7 @@ ex:PersonShape
 			the class <code>ex:Person</code>.
 			These focus nodes are the <a>targets</a> of the <a>shape</a> and are specified using the property
 			<code>sh:targetClass</code>.
-			The <a>shape</a> has three <a>property constraints</a> with the property <code>sh:shape</code>,
+			The <a>shape</a> has three shapes with the property <code>sh:shape</code>,
 			one of which uses a <a>path</a> expression.
 			The <a>shape</a> itself is also a constraint on the focus nodes using the <a>parameters</a>
 			<code>sh:closed</code>
@@ -739,7 +734,7 @@ ex:PersonShape
 			Some of the property constraints specify parameters from multiple <a>constraint components</a> in
 			order to
 			restrict multiple aspects of the property values.
-			For example, in the <a>property constraint</a> for <code>ex:ssn</code>, parameters from three <a>constraint
+			For example, in the shape for <code>ex:ssn</code>, parameters from three <a>constraint
 			components</a> are used.
 			The <a>parameters</a> of these <a>constraint components</a> are <code>sh:datatype</code>,
 			<code>sh:pattern</code> and <code>sh:maxCount</code>.
@@ -837,7 +832,7 @@ ex:PersonShape
 		</li>
 	</ul>
 	<p>
-		A <dfn>validation result</dfn> from RDF term f, optional RDF term v, data graph
+		A <dfn data-lt="validation results">validation result</dfn> from RDF term f, optional RDF term v, data graph
 		D, constraint <code>c</code> with type C, and shape <code>s</code> in shapes graph <code>S</code>
 		is a node in a results graph <code>G</code> that meets the following conditions:
 	</p>
@@ -882,7 +877,7 @@ ex:PersonShape
 		<code>f,v,D,c,s,S</code> and that node is an element of its top-level validation results.
 	</p>
 	<p>
-		A <dfn>validation report</dfn> <code>V</code> for a <a>results structure</a> <code>R</code> is any results graph
+		A <dfn data-lt="validation reports">validation report</dfn> <code>V</code> for a <a>results structure</a> <code>R</code> is any results graph
 		containing at least the triples of <code>R</code> plus a new blank node <code>n</code> with
 		<code>sh:ValidationReport</code> as a value for <code>rdf:type</code> in <code>V</code>;
 		<code>"false"^^xsd:boolean</code> as sole value for <code>sh:conforms</code> in <code>V</code>
@@ -1035,7 +1030,7 @@ ex:PersonShape
 			<p>
 				If <code>s</code> is a shape in an RDF graph <code>G</code> with a value for sh:targetNode in
 				<code>G</code> that
-				is not an IRI or <a>literal</a> then <code>s</code> is an <a>ill-formed shape</a> in <code>G</code>.
+				is not an IRI or literal then <code>s</code> is an <a>ill-formed shape</a> in <code>G</code>.
 			</p>
 			<p>
 				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value t for
@@ -1154,7 +1149,7 @@ ex:Bob ex:livesIn ex:NewYork .</pre>
 			<p>
 				In the example above, only <code>ex:Alice</code> is validated against the given shape,
 				because it is the subject of a <a>triple</a> that has <code>ex:knows</code> as its
-				<a>predicate</a>.
+				predicate.
 			</p>
 		</section>
 
@@ -1182,8 +1177,8 @@ ex:Alice ex:knows <span class="node-selected">ex:Bob</span> .
 ex:Bob ex:livesIn ex:NewYork .</pre>
 			<p>
 				In the example above, only <code>ex:Bob</code> is validated against the given shape,
-				because it is the <a>object</a> of a <a>triple</a> that has <code>ex:knows</code> as its
-				<a>predicate</a>.
+				because it is the object of a <a>triple</a> that has <code>ex:knows</code> as its
+				predicate.
 			</p>
 		</section>
 
@@ -2202,7 +2197,7 @@ ex:OrConstraintExampleShape
 		<pre class="example-data">
 ex:Bob ex:firstName "Robert" .</pre>
 		<p>
-			The next example shows how <code>sh:or</code> can be used in a <a>property constraint</a> to state that the values of
+			The next example shows how <code>sh:or</code> can be used in a shape to state that the values of
 			the given property <code>ex:address</code> may be either literals with datatype <code>xsd:string</code>
 			or <a>SHACL instances</a> of the class <code>ex:Address</code>.
 		</p>
@@ -2475,7 +2470,7 @@ ex:RainbowPony ex:color ex:Pink .</pre>
 		activated on the <a>data graph</a>.
 		However, the property <code>sh:entailment</code> can be used in the <a>shapes graph</a> to instruct a SHACL
 		processor to ensure that a given entailment is activated on the <a>data graph</a>.
-		The <a>values</a> of <code>sh:entailment</code> are <a>IRIs</a>, with common use cases covered by
+		The <a>values</a> of <code>sh:entailment</code> are IRIs, with common use cases covered by
 		[[!sparql11-entailment]].
 	</p>
 	<p>
