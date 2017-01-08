@@ -459,32 +459,17 @@
 	<section id="sparql-constraints">
 		<h2>sh:SPARQLConstraintComponent</h2>
 		<p>
-			SHACL-SPARQL supports a <a>constraint component</a> that can be used to express restrictions based on a
+			sh:SPARQLConstraintComponent is a special <a>constraint component</a> with mandatory
+			parameter sh:sparql.
+
+			sh:SPARQLConstraintComponent  can be used to express restrictions based on a
 			SPARQL SELECT query.
 		</p>
 		<p>
-			<span class="component-class">Constraint Component IRI</span>: <code>sh:SPARQLConstraintComponent</code>
+			A shape in an RDF graph with a value for <code>sh:sparql</code> in <code>G</code> that is not
+			a SHACL Instance of <code>sh:SPARQLConstraint</code> is an <a>ill-formed shape</a> in <code>G</code>.
 		</p>
 
-		<div class="parameters">Parameters:</div>
-		<table class="term-table">
-			<tr>
-				<th>Property</th>
-				<th>Summary</th>
-			</tr>
-			<tr>
-				<td><code>sh:sparql</code></td>
-				<td>A <a>SPARQL-based constraint</a> declaring the SPARQL query to evaluate</td>
-			</tr>
-		</table>
-		<p>
-			The <a>subjects</a> of all triples with <code>sh:sparql</code> as <a>predicate</a> must be <a>shapes</a>.
-			The <a>expected type</a> of the <a>objects</a> of triples with <code>sh:sparql</code> as <a>predicate</a> is
-			<code>sh:SPARQLConstraint</code>.
-			<code>sh:SPARQLConstraint</code> is declared as <code>rdfs:subClassOf sh:Constraint</code> in the SHACL
-			vocabulary.
-			Such nodes are called <dfn data-lt="SPARQL-based constraint">SPARQL-based constraints</dfn> and are also <a>constraints</a>.
-		</p>
 		<p>
 			The validation process for SPARQL-based constraints is defined by the rest of this section.
 			No validation results are produced if the constraint has <code>true</code> as a <a>value</a> for the
@@ -492,11 +477,9 @@
 		</p>
 
 		<section id="sparql-constraints-syntax">
-			<h3>Syntax of SPARQL-based Constraints</h3>
+			<h3>sh:SPARQLConstraint</h3>
 			<p>
-				Shapes may have values for the property <code>sh:sparql</code>, and these values are either <a>IRIs</a>
-				or <a>blank nodes</a>.
-				SPARQL-based constraints have exactly one <a>value</a> for the property <code>sh:select</code> and this
+				Every SHACL instance of sh:SPARQLConstraint has exactly one <a>value</a> for the property <code>sh:select</code> and this
 				value is a <a>literal</a> of datatype <code>xsd:string</code>.
 				As elaborated in the section on <a href="#sparql-prefixes">prefix handling rules</a>, the value of
 				<code>sh:select</code> is a valid SPARQL 1.1 SELECT query.
