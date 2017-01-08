@@ -442,10 +442,15 @@
 		<div class="def">
 			<div class="term-def-header">Path</div>
 			<div>
-				A <dfn>path</dfn> in an <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-graph">RDF graph</a> <code>G</code> from <a  href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term">RDF term</a> <code>n</code> to RDF term
+				A <dfn>path</dfn> in an <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-graph">RDF graph</a>
+				<code>G</code> from <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term">RDF term</a>
+				<code>n</code> to RDF term
 				m is a sequence
-				of <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple">RDF triples</a> in <code>G</code> such that the <a  href="https://www.w3.org/TR/rdf11-concepts/#dfn-subject">subject</a> of the first RDF triple is n,
-				the <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-object">object</a> of the last RDF triple is <code>m</code>, and the object of each RDF triple
+				of <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple">RDF triples</a> in <code>G</code> such
+				that the <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-subject">subject</a> of the first RDF triple
+				is n,
+				the <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-object">object</a> of the last RDF triple is
+				<code>m</code>, and the object of each RDF triple
 				except the last is the subject of the next.
 			</div>
 		</div>
@@ -475,7 +480,8 @@
 		<div class="def">
 			<div class="term-def-header">SHACL List</div>
 			<div>
-				A <dfn data-lt="SHACL lists">SHACL list</dfn> in an RDF graph <code>G</code> is an IRI or a <a  href="http://www.w3.org/TR/rdf11-concepts/#dfn-node">blank node</a> that is
+				A <dfn data-lt="SHACL lists">SHACL list</dfn> in an RDF graph <code>G</code> is an IRI or a <a
+					href="http://www.w3.org/TR/rdf11-concepts/#dfn-node">blank node</a> that is
 				either <code>rdf:nil</code> (provided that <code>rdf:nil</code> has no value for either
 				<code>rdf:first</code>
 				or
@@ -650,7 +656,8 @@ SHACL Property path: [ sh:alternativePath ( ex:father ex:mother  ) ]</pre>
 	<section class="informative">
 		<h3>SHACL Example (TODO)</h3>
 		<p>
-			The following example <a>data graph</a> contains three <a>SHACL instances</a> of the class <code>ex:Person</code>.
+			The following example <a>data graph</a> contains three <a>SHACL instances</a> of the class
+			<code>ex:Person</code>.
 		</p>
 		<pre class="example-data">
 ex:Alice
@@ -728,7 +735,8 @@ ex:PersonShape
 			<code>sh:targetClass</code>.
 			The <a>shape</a> has three <a>property constraints</a> with the property <code>sh:shape</code>,
 			one of which uses a <a>path</a> expression.
-			The <a>shape</a> itself is also a constraint on the focus nodes using the <a>parameters</a> <code>sh:closed</code>
+			The <a>shape</a> itself is also a constraint on the focus nodes using the <a>parameters</a>
+			<code>sh:closed</code>
 			and <code>sh:ignoredProperties</code>.
 		</p>
 		<p>
@@ -780,7 +788,8 @@ ex:PersonShape
 	] .</pre>
 		<p>
 			The <a>validation results</a> are enclosed in a <a>validation report</a>.
-			The first <a>validation result</a> is produced because <code>ex:Alice</code> has a value for <code>ex:ssn</code>
+			The first <a>validation result</a> is produced because <code>ex:Alice</code> has a value for
+			<code>ex:ssn</code>
 			that does not match the regular expression specified by the property <code>sh:regex</code>.
 			The second <a>validation result</a> is produced because <code>ex:Bob</code> has more than the permitted
 			number of values
@@ -834,7 +843,7 @@ ex:PersonShape
 	<p>
 		A <dfn>validation result</dfn> from RDF term f, optional RDF term v, data graph
 		D, constraint c with type C, and shape <code>s</code> in shapes graph <code>S</code>
-		is a node in a results graph <code>G</code> that meets the following conditions
+		is a node in a results graph <code>G</code> that meets the following conditions:
 	</p>
 	<ul>
 		<li>It has <code>sh:ValidationResult</code> as a value for <code>rdf:type</code> in <code>G</code>
@@ -842,8 +851,7 @@ ex:PersonShape
 		<li>Its sole value for <code>sh:focusNode</code> in <code>G</code> is f
 		</li>
 		<li>Its sole value for <code>sh:valueNode</code> in <code>G</code> is <code>v</code> if <code>v</code> is
-			present,
-			otherwise it has no value for <code>sh:valueNode</code> in <code>G</code>
+			present, otherwise it has no value for <code>sh:valueNode</code> in <code>G</code>
 		</li>
 		<li>Its sole value for sh:resultPath in <code>G</code> is a SHACL property path in <code>G</code> that
 			is equivalent to the value of <code>s</code> for <code>sh:path</code> in <code>S</code> if there is one,
@@ -853,8 +861,11 @@ ex:PersonShape
 		</li>
 		<li>Its sole value for sh:sourceConstraintComponent in <code>G</code> is C
 		</li>
-		<li>Its sole value for sh:resultSeverity in <code>G</code> is the severity of <code>s</code> in <code>S</code>
+		<li>Its sole value for sh:resultSeverity in <code>G</code> is the <a>severity</a> of <code>s</code> in <code>S</code>
 		</li>
+		<li>Its values for sh:resultMessage in <code>G</code> are the <a>validation messages</a> of <code>s</code> in <code>S</code>
+		</li>
+
 		<li>Its values, if any, for <code>p</code> in <code>G</code> with <code>p</code> a non-list-taking
 			parameter of C
 			and <code>X = { x | &lt;p,x&gt; is a parameter value of c }</code> are the elements of X
@@ -924,15 +935,32 @@ ex:PersonShape
 			shapes</dfn> in <code>G</code>.
 			Ill-formed shapes are described in the rest of this document.
 		</p>
-		<p>
-			If <code>s</code> is a shape in an RDF graph <code>G</code> with more than one value for sh:severity
-			in <code>G</code> or a a value that is not sh:Info, sh:Warning, or sh:Violation then <code>s</code> is
-			an <a>ill-formed shape</a> in <code>G</code>.
-		</p>
-		<p>
-			The <dfn>severity</dfn> of a SHACL shape in a shapes graph <code>S</code> is its value for
-			sh:severity in <code>S</code>, if any, otherwise <code>sh:Violation</code>.
-		</p>
+		<section>
+			<h3>sh:severity</h3>
+
+			<p>
+				If <code>s</code> is a shape in an RDF graph <code>G</code> with more than one value for sh:severity
+				in <code>G</code> or a a value that is not sh:Info, sh:Warning, or sh:Violation then <code>s</code> is
+				an <a>ill-formed shape</a> in <code>G</code>.
+			</p>
+			<p>
+				The <dfn>severity</dfn> of a SHACL shape in a shapes graph <code>S</code> is its value for
+				sh:severity in <code>S</code>, if any, otherwise <code>sh:Violation</code>.
+			</p>
+		</section>
+
+		<section>
+			<h3>sh:message</h3>
+			<p>
+			If <code>s</code> is a shape in an RDF graph <code>G</code> with a value for sh:message that is
+				that is neither a literal of datatype <code>xsd:string</code> nor a language-tagged literal
+				is an <a>ill-formed shape</a> in <code>G</code>.
+			</p>
+			</p>
+			<p>The <dfn>validation messages</dfn> of a SHACL shape in a shapes graph <code>S</code> are its values for
+				sh:message in <code>S</code>, if any, otherwise they are defined by the SHACL Processor.</p>
+		</section>
+
 	</section>
 	<section>
 		<h3>Constraint components and constraints</h3>
@@ -951,8 +979,10 @@ ex:PersonShape
 		<p>
 			For a constraint component C with mandatory parameters p1, ..., pn a shape <code>s</code>
 			in a shapes graph <code>S</code> has a <dfn data-lt="constraints">constraint</dfn> of type C with <dfn>mandatory
-			parameter values</dfn> <code>&lt;p1,v1&gt;, ..., &lt;pn,vn&gt;</code> in <code>S</code> when <code>s</code> has vi as a value for
-			pi in <code>S</code>. If <code>s</code> in <code>S</code> has a constraint of type C in <code>S</code> then the <dfn>optional
+			parameter values</dfn> <code>&lt;p1,v1&gt;, ..., &lt;pn,vn&gt;</code> in <code>S</code> when <code>s</code>
+			has vi as a value for
+			pi in <code>S</code>. If <code>s</code> in <code>S</code> has a constraint of type C in <code>S</code> then
+			the <dfn>optional
 			parameter values</dfn> of the constraint in <code>S</code> are all the &lt;oi,vi&gt; where oi is an
 			optional parameter of C and <code>s</code> has vi as a value for oi in <code>S</code>.
 			The <dfn>parameter values</dfn> of a constraint are its manadatory parameter values and
@@ -980,20 +1010,24 @@ ex:PersonShape
 	<section>
 		<h3>Targets</h3>
 		<p>
-			The complete <dfn data-lt="target">targets</dfn> from a data graph <code>D</code> for a shape <code>s</code> in a shapes
+			The complete <dfn data-lt="target">targets</dfn> from a data graph <code>D</code> for a shape <code>s</code>
+			in a shapes
 			graph
-			S is the union of the targets from <code>D</code> for <code>s</code> in <code>S</code> as defined in the reminder <code>f</code> this
+			S is the union of the targets from <code>D</code> for <code>s</code> in <code>S</code> as defined in the
+			reminder <code>f</code> this
 			section.
 		</p>
 
 		<section id="targetNode">
 			<h4>Node targets (sh:targetNode)</h4>
 			<p>
-				If <code>s</code> is a shape in an RDF graph <code>G</code> with a value for sh:targetNode in <code>G</code> that
+				If <code>s</code> is a shape in an RDF graph <code>G</code> with a value for sh:targetNode in
+				<code>G</code> that
 				is not an IRI or <a>literal</a> then <code>s</code> is an <a>ill-formed shape</a> in <code>G</code>.
 			</p>
 			<p>
-				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value t for sh:targetNode in <code>S</code>
+				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value t for
+				sh:targetNode in <code>S</code>
 				then { t } is a <a>target</a> from any data graph for <code>s</code> in <code>S</code>.
 			</p>
 			<p><em>The remainder of this section is informative.</em></p>
@@ -1014,10 +1048,12 @@ ex:Bob a ex:Person .</pre>
 		<section id="targetClass">
 			<h4>Class-based Targets (sh:targetClass)</h4>
 			<p>
-				If <code>s</code> is a shape in an RDF graph <code>G</code> with a value for sh:targetClass in <code>G</code> that
+				If <code>s</code> is a shape in an RDF graph <code>G</code> with a value for sh:targetClass in
+				<code>G</code> that
 				is not an IRI then <code>s</code> is an <a>ill-formed shape</a> in <code>G</code>.
 
-				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value c for sh:targetClass in
+				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value c for
+				sh:targetClass in
 				S then the set of SHACL instances of c in a data graph <code>D</code> is a **target**
 				from <code>D</code> for <code>s</code> in <code>S</code>.
 			</p>
@@ -1055,12 +1091,16 @@ ex:House a ex:Nephrologist .</pre>
 		<section id="implicit-targetClass">
 			<h4>Implicit Class Targets</h4>
 			<p>
-				If <code>s</code> is a shape in an RDF graph <code>G</code> and <code>s</code> is also a SHACL instance of
-				rdfs:Class in <code>G</code> and <code>s</code> is not an IRI then <code>s</code> is an <a>ill-formed shape</a> in <code>G</code>.
+				If <code>s</code> is a shape in an RDF graph <code>G</code> and <code>s</code> is also a SHACL instance
+				of
+				rdfs:Class in <code>G</code> and <code>s</code> is not an IRI then <code>s</code> is an <a>ill-formed
+				shape</a> in <code>G</code>.
 			</p>
 			<p>
-				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> is also a SHACL instance of
-				rdfs:Class in <code>S</code> then the set of SHACL instances of <code>s</code> in a data graph <code>D</code> is a
+				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> is also a SHACL
+				instance of
+				rdfs:Class in <code>S</code> then the set of SHACL instances of <code>s</code> in a data graph
+				<code>D</code> is a
 				**target** from <code>D</code> for <code>s</code> in <code>S</code>.
 
 			</p>
@@ -1085,9 +1125,11 @@ ex:NewYork a ex:Place .</pre>
 				not an IRI is an **ill-formed** shape in <code>G</code>.
 			</p>
 			<p>
-				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value <code>p</code> for sh:targetSubjectsOf
+				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value
+				<code>p</code> for sh:targetSubjectsOf
 				in <code>S</code> then the set of nodes in a data graph <code>D</code> that are subjects of RDF
-				triples in <code>D</code> with predicate <code>p</code> is a **target** from <code>D</code> for <code>s</code> in <code>S</code>.
+				triples in <code>D</code> with predicate <code>p</code> is a **target** from <code>D</code> for
+				<code>s</code> in <code>S</code>.
 			</p>
 			<p><em>The remainder of this section is informative.</em></p>
 			<pre class="example-shapes">
@@ -1111,9 +1153,11 @@ ex:Bob ex:livesIn ex:NewYork .</pre>
 				not an IRI is an <a>ill-formed shape</a> in <code>G</code>.
 			</p>
 			<p>
-				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value <code>p</code> for sh:targetObjectsOf
+				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value
+				<code>p</code> for sh:targetObjectsOf
 				in <code>S</code> then the set of nodes in a data graph <code>D</code> that are objects of RDF triples
-				in <code>D</code> with predicate <code>p</code> is a **target** from <code>D</code> for <code>s</code> in <code>S</code>.
+				in <code>D</code> with predicate <code>p</code> is a **target** from <code>D</code> for <code>s</code>
+				in <code>S</code>.
 			</p>
 			<p><em>The remainder of this section is informative.</em></p>
 
@@ -1145,14 +1189,143 @@ ex:Bob ex:livesIn ex:NewYork .</pre>
 			shape</a> in <code>G</code>.
 		</p>
 		<p>
-			Given <code>f</code> an RDF term, <code>D</code> a data graph, and <code>s</code> a shape in <code>S</code> a shapes graph
-			the <dfn data-lt="value node">value nodes</dfn> of <code>f</code> with <code>D</code> for <code>s</code> in <code>S</code> is the set
+			Given <code>f</code> an RDF term, <code>D</code> a data graph, and <code>s</code> a shape in <code>S</code>
+			a shapes graph
+			the <dfn data-lt="value node">value nodes</dfn> of <code>f</code> with <code>D</code> for <code>s</code> in
+			<code>S</code> is the set
 			containing
-			the values of <code>f</code> for path(p,S) in <code>D</code> if <code>s</code> has <code>p</code> as value for <code>sh:path</code>
-			in
-			S,
-			or just <code>f</code> if <code>s</code> has no value for <code>sh:path</code> in <code>S</code>.
+			the values of <code>f</code> for path(p,S) in <code>D</code> if <code>s</code> has <code>p</code> as value
+			for <code>sh:path</code>
+			in S, or just <code>f</code> if <code>s</code> has no value for <code>sh:path</code> in <code>S</code>.
 		</p>
+	</section>
+
+	<section>
+		<h3>Non-Validation Shape Annotations</h4>
+
+			<p>
+				This section covers shape annotation properties that are ignored by SHACL processors.
+				The use of these properties is entirely optional and not subject to formal interpretation contracts.
+				They MAY be used for purposes such as form building or predictable printing of RDF files.
+			</p>
+			<p id="name">
+				Shapes may have one or more values for <code>sh:name</code> to provide human-readable labels for the
+				Shape.
+				Similarly, shapes may have one or more values for <code id="description">sh:description</code> to
+				provide a description of the shape.
+				Both <code>sh:name</code> and <code>sh:description</code> may have multiple <a>values</a>, but should
+				only have one <a>value</a> per language tag.
+			</p>
+			<p id="order">
+				Shapes may have one <a>value</a> for the property <code>sh:order</code> to indicate the relative order
+				of the shape for purposes such as form building.
+				The values of <code>sh:order</code> are decimals.
+				If present, the recommended use of <code>sh:order</code> is to sort shapes in an ascending order, for
+				example so that
+				properties with smaller order are placed above (or to the left) of properties with larger order.
+			</p>
+			<p id="group">  <span class="todo">rename to shapeGroup?</span>
+				Shapes may link to an <a>SHACL instance</a> of the class <code>sh:PropertyGroup</code> using the
+				property <code>sh:group</code> to indicate that
+				the shape belongs to a group of related shapes.
+				Each group may have additional triples that serve application purposes, such as an
+				<code>rdfs:label</code> for form building.
+				Groups may also have an <code>sh:order</code> property to indicate the relative ordering of groups
+				within the same form.
+			</p>
+			<p id="defaultValue">
+				Shapes may have a single value for <code>sh:defaultValue</code>.
+				The default value does not have fixed semantics in SHACL, but MAY be used by user interface tools to
+				pre-populate input widgets.
+				The value type of the <code>sh:defaultValue</code> should align with the specified
+				<code>sh:datatype</code> or <code>sh:class</code> of the same constraint.
+			</p>
+
+			<p><em>The remainder of this section is informative.</em></p>
+
+			<p>
+				The following example illustrates the use of these various features together.
+			</p>
+			<pre class="example-shapes">
+ex:PersonFormShape
+	a sh:Shape ;
+	sh:shape [
+		sh:path ex:firstName ;
+		sh:name "first name" ;
+		sh:description "The person's given name(s)" ;
+		sh:order 0 ;
+		sh:group ex:NameGroup ;
+	] ;
+	sh:shape [
+		sh:path ex:lastName ;
+		sh:name "last name" ;
+		sh:description "The person's last name" ;
+		sh:order 1 ;
+		sh:group ex:NameGroup ;
+	] ;
+	sh:shape [
+		sh:path ex:streetAddress ;
+		sh:name "street address" ;
+		sh:description "The street address including number" ;
+		sh:order 11 ;
+		sh:group ex:AddressGroup ;
+	] ;
+	sh:shape [
+		sh:path ex:locality ;
+		sh:name "locality" ;
+		sh:description "The suburb, city or town of the address" ;
+		sh:order 12 ;
+		sh:group ex:AddressGroup ;
+	] ;
+	sh:shape [
+		sh:path ex:postalCode ;
+		sh:name "postal code" ;
+		sh:name "zip code"@en-US ;
+		sh:description "The postal code of the locality" ;
+		sh:order 13 ;
+		sh:group ex:AddressGroup ;
+	] .
+
+ex:NameGroup
+	a sh:PropertyGroup ;
+	sh:order 0 ;
+	rdfs:label "Name" .
+
+ex:AddressGroup
+	a sh:PropertyGroup ;
+	sh:order 1 ;
+	rdfs:label "Address" .</pre>
+			<p>
+				A form building application MAY use the information above to display information as follows:
+			</p>
+			<div style="background: #f3f3f3; padding: 8px">
+				<div style="font-size: 18px; color: #0000a0"><b>Name</b></div>
+				<table>
+					<tr>
+						<td style="text-align: right; width: 160px"><b>first name:</b></td>
+						<td>John</td>
+					</tr>
+					<tr>
+						<td style="text-align: right"><b>last name:</b></td>
+						<td>Doe</td>
+					</tr>
+				</table>
+				<div style="font-size: 18px; padding-top: 6px; color: #0000a0"><b>Address</b></div>
+				<table>
+					<tr>
+						<td style="text-align: right; width: 160px"><b>street address:</b></td>
+						<td>123 Silverado Ave</td>
+					</tr>
+					<tr>
+						<td style="text-align: right"><b>locality:</b></td>
+						<td>Cupertino</td>
+					</tr>
+					<tr>
+						<td style="text-align: right"><b>zip code:</b></td>
+						<td>54321</td>
+					</tr>
+				</table>
+			</div>
 	</section>
 
 </section>
@@ -1191,11 +1364,15 @@ ex:Bob ex:livesIn ex:NewYork .</pre>
 	<section>
 		<h3>Conformance of a Data Graph against a Shape in a Shapes Graph</h3>
 		<p>
-			Given <code>G</code> a data graph and <code>s</code> a shape in <code>S</code> a shapes graph, a **results graph**
-			for the validation of <code>G</code> against <code>s</code> in <code>S</code> is a combination of some multiset {{
+			Given <code>G</code> a data graph and <code>s</code> a shape in <code>S</code> a shapes graph, a **results
+			graph**
+			for the validation of <code>G</code> against <code>s</code> in <code>S</code> is a combination of some
+			multiset {{
 			R1, ..., Rn }} where { t1, ..., tn } is the complete targets from <code>G</code> for <code>s</code> in
-			S and Ri is a results graph for the validation of ti using <code>G</code> against <code>s</code> in <code>S</code>.
-			A data graph <code>D</code> **conforms** to a shape <code>s</code> in a shapes graph <code>S</code> if and only
+			S and Ri is a results graph for the validation of ti using <code>G</code> against <code>s</code> in
+			<code>S</code>.
+			A data graph <code>D</code> **conforms** to a shape <code>s</code> in a shapes graph <code>S</code> if and
+			only
 			there is a results graph for the validation of <code>D</code> against <code>s</code> in <code>S</code> that
 			contains no top-level validation results.
 		</p>
@@ -1203,14 +1380,19 @@ ex:Bob ex:livesIn ex:NewYork .</pre>
 	<section>
 		<h3>Conformance of an RDF term in a Data Graph against a Shape in a Shapes Graph</h3>
 		<p>
-			Given <code>f</code> an RDF term, <code>D</code> a data graph, and <code>s</code> a shape in a shapes graph <code>S</code> a
-			**results graph** for the validation of <code>f</code> using <code>G</code> against <code>s</code> in <code>S</code> is a
+			Given <code>f</code> an RDF term, <code>D</code> a data graph, and <code>s</code> a shape in a shapes graph
+			<code>S</code> a
+			**results graph** for the validation of <code>f</code> using <code>G</code> against <code>s</code> in <code>S</code>
+			is a
 			combination of some multiset {{ R1, ..., Rn }} where { c1, ..., cn } is the
-			constraints of <code>s</code> in <code>S</code>, Ri is an element of results(f,V,D,ci,s,S), and <code>V</code> is
-			the value nodes of <code>f</code> with <code>D</code> for <code>s</code> in <code>S</code>. An RDF term and a data graph
+			constraints of <code>s</code> in <code>S</code>, Ri is an element of results(f,V,D,ci,s,S), and
+			<code>V</code> is
+			the value nodes of <code>f</code> with <code>D</code> for <code>s</code> in <code>S</code>. An RDF term and
+			a data graph
 			<code>D</code>
 			**conforms** to a shape <code>s</code> in a shapes graph <code>S</code> if and only if there is a
-			results graph for the validation of the RDF term using <code>D</code> against <code>s</code> in <code>S</code> that
+			results graph for the validation of the RDF term using <code>D</code> against <code>s</code> in
+			<code>S</code> that
 			contains no top-level validation results.
 		</p>
 	</section>
@@ -1220,6 +1402,8 @@ ex:Bob ex:livesIn ex:NewYork .</pre>
 		top-level validation results they will all have no top-level validation
 		results.
 	</p>
+
+
 </section>
 
 <section id="core-constraint-components">
@@ -1231,7 +1415,8 @@ ex:Bob ex:livesIn ex:NewYork .</pre>
 	<p>
 		Given an RDF term f, a set of RDF terms <code>V</code>, a data graph D, a constraint c,
 		and a shape <code>s</code> in a shapes graph <code>S</code> the possible **results of validating** f
-		and <code>v</code> with <code>D</code> against c in <code>S</code>, <code>results(f,V,D,c,s,S)</code>, is a set of results
+		and <code>v</code> with <code>D</code> against c in <code>S</code>, <code>results(f,V,D,c,s,S)</code>, is a set
+		of results
 		structures as defined in this section.
 	</p>
 
@@ -1276,7 +1461,7 @@ ex:Bob ex:knows ex:Alice .
 		<span class="todo">sh:DatatypeConstraintComponent and sh:NodeKindConstraintComponent are
 			similar to sh:ClassConstraintComponent </span>
 		<p><em>The remainder of this section is informative.</em></p>
-		<pre class="example-shapes" title="Shape with sh:datatype property constraint">
+		<pre class="example-shapes" title="Shape with sh:datatype">
 ex:DatatypeExampleShape
 	a sh:Shape ;
 	<span class="target-can-be-skipped">sh:targetNode ex:Alice, ex:Bob, ex:Carol ;</span>
@@ -1714,7 +1899,8 @@ ex:LessThanExampleShape
 			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>s</code> is not recursive and c
 			has type sh:ShapeConstraintComponent and parameter values &lt;sh:shape,x&gt;
 			contains a different top-level validation result from <code> f,v,D,c,s,S </code> for each v
-			in <code>V</code> where <code>v</code> and <code>D</code> do not conform to x in <code>S</code> and no other top-level
+			in <code>V</code> where <code>v</code> and <code>D</code> do not conform to x in <code>S</code> and no other
+			top-level
 			validation results.
 		</p>
 		<p><em>The remainder of this section is informative.</em></p>
@@ -1941,7 +2127,8 @@ ex:Jane
 			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
 			for each RDF triple in <code>D</code> with subject f
 			whose predicate is
-			not a value of some value of <code>s</code> for sh:shape in <code>D</code> for <code>sh:path</code> in <code>D</code>
+			not a value of some value of <code>s</code> for sh:shape in <code>D</code> for <code>sh:path</code> in
+			<code>D</code>
 			and not a member of i in <code>D</code> if the constraint has
 			optional parameter values &lt;sh:ignoredProperties,i&gt;
 			and no other top-level validation results.
@@ -2081,6 +2268,19 @@ ex:RainbowPony ex:color ex:Pink .</pre>
 		any of these representations. A SHACL processor MAY store any
 		representation of a validation report that it constructs so long as the
 		processor does not not violate the previous requirement.
+	</p>
+</section>
+
+<section id="entailment">
+	<h2>Entailment</h2>
+	<p>
+		By default, SHACL does not assume any <span class="term">entailment regime</span> [[!sparql11-entailment]] to be activated on the <a>data graph</a>.
+		However, the property <code>sh:entailment</code> can be used in the <a>shapes graph</a> to instruct a SHACL processor to ensure that a given entailment is activated on the <a>data graph</a>.
+		The <a>values</a> of <code>sh:entailment</code> are <a>IRIs</a>, with common use cases covered by [[!sparql11-entailment]].
+	</p>
+	<p>
+		SHACL processors are not required to support any entailment regimes.
+		If an entailment regime is provided in the <a>shapes graph</a> which is not supported by the SHACL processor, the <a>validation</a> MUST produce a <a>failure</a>.
 	</p>
 </section>
 
