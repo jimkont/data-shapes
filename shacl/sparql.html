@@ -424,7 +424,7 @@
 	</section>
 
 	<section id="shacl-sparql">
-		<h3>Relationship between SHACL and SPARQL</h3>
+		<h3>Relationship to SPARQL</h3>
 		<p>
 			This specification uses parts of SPARQL 1.1 in the normative definition of the semantics of the SHACL-SPARL.
 		</p>
@@ -447,6 +447,21 @@
 
 
 	</section>
+
+	<section>
+		<h3>Relation to SHACL</h3>
+		<p>
+			<span class="todo">
+				Say it extends SHACL. SHACL-SPARQL support all SHACL constructs
+				SHACL-SPARQL definitions go into shapes graph to define constraints.
+				sh:SparqlSelectConstraintComponent is a constraint component similar to the SHACL Core components
+				-> executed user query for value nodes.
+				SPARQL-Based Constraint compontents provide a high level vocabulary to define custom constraint components.
+				-> define parameters of constraint components and define how these parameters are prebind into SPARQL queries and executed on value nodes.
+			</span>
+		</p>
+	</section>
+
 </section>
 
 
@@ -1218,7 +1233,7 @@ ex:hasLang
 	<h2>SHACL-SPARQL Processors</h2>
 	<p>
 		A SHACL-SPARQL processor MUST be a conformant SHACL Processor.
-		<span class="todo">more?</span>
+		<span class="todo">Say we do not need to support all SHACL Core constraint components except sh:shape?</span>
 	</p>
 </section>
 
