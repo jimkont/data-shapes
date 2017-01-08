@@ -957,6 +957,22 @@ ex:PersonShape
 				sh:message in <code>S</code>, if any, otherwise they are defined by the SHACL Processor.</p>
 		</section>
 
+		<section>
+			<h3>sh:deactivated</h3>
+            <p>
+			If <code>s</code> is a shape in an RDF graph <code>G</code> with a value for sh:deactivated that is not
+	            <code>"true"^^xsd:boolean</code> is an <a>ill-formed shape</a> in <code>G</code>
+            </p>
+
+			<p>
+				A shape code>s</code> is a shape in an RDF graph <code>G</code> with <code>"true"^^xsd:boolean</code>
+				as a value for sh:deactivated is a <dfn>deactivated</dfn> shape.
+			</p>
+			<p>
+				A <a>deactivated</a> shape <a>conforms</a> to all RDF terms.
+			</p>
+		</section>
+
 	</section>
 	<section>
 		<h3>Constraint components and constraints</h3>
