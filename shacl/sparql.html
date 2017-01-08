@@ -320,14 +320,7 @@
 			<span class="todo">TODO: needs more work.</span>
 		</p>
 		<p>
-			This specification describes conformance criteria for:
-		</p>
-		<ul>
-			<li>TODO...
-			<li><strong>SHACL SPARQL processors</strong> as processors that support validation with the SHACL-SPARQL
-				Language
-			</li>
-		</ul>
+			This specification describes conformance criteria <strong>SHACL SPARQL processors</strong>.
 		<p>
 			<span class="todo">TODO: link to test cases.</span>
 		</p>
@@ -454,7 +447,6 @@
 			However, such <a>constraints</a> may not be interoperable across different SHACL-SPARQL processors or not
 			applicable to remote RDF datasets.
 		</p>
-		ction>
 
 
 	</section>
@@ -466,9 +458,6 @@
 	<p>
 		shs:SPARQLConstraintComponent is a special <a>constraint component</a> with mandatory
 		parameter shs:sparql.
-
-		shs:SPARQLConstraintComponent can be used to express restrictions based on a
-		SPARQL SELECT query.
 	</p>
 	<p>
 		A shape in an RDF graph with a value for <code>shs:sparql</code> in <code>G</code> that is not
@@ -492,6 +481,19 @@
 			This query contains the result variable <code>this</code> in the SELECT clause.
 			The remainder of this section is not normative.
 		</p>
+
+		<p>
+			The SPARQL query returns result set <a>solutions</a> for all bindings of the variable <code>value</code>
+			that violate the constraint.
+			A validation result is produced for each <a>solution</a> in that result set, following the <a
+				href="#sparql-constraints-variables">mapping rules</a> explained later:
+			Each validation result will have the <a>binding</a> for the variable <code>this</code> as the <code>sh:focusNode</code>,
+			<code>ex:germanLabel</code> as <code>sh:resultPath</code> and the violating value as
+			<code>sh:value</code>.
+		</p>
+
+		<p><em>The remainder of this section is informative.</em></p>
+
 		<p>
 			The following example illustrates the syntax of a SPARQL-based constraint.
 		</p>
@@ -537,15 +539,7 @@ ex:LanguageExampleShape
 		sh:sourceShape ex:LanguageExampleShape ;
 		# ...
 	] .</pre>
-		<p>
-			The SPARQL query returns result set <a>solutions</a> for all bindings of the variable <code>value</code>
-			that violate the constraint.
-			A validation result is produced for each <a>solution</a> in that result set, following the <a
-				href="#sparql-constraints-variables">mapping rules</a> explained later:
-			Each validation result will have the <a>binding</a> for the variable <code>this</code> as the <code>sh:focusNode</code>,
-			<code>ex:germanLabel</code> as <code>sh:resultPath</code> and the violating value as
-			<code>sh:value</code>.
-		</p>
+
 	</section>
 	<section id="sparql-prefixes">
 		<h4>Prefix Declarations for SPARQL Queries</h4>
@@ -788,6 +782,9 @@ ex:
 			<code>shs:annotationValue</code>
 			MUST be used, if present.
 		</p>
+
+		<p><em>The remainder of this section is informative.</em></p>
+
 		<p>
 			Here is a slightly complex example, illustrating the use of result annotations.
 		</p>
@@ -842,15 +839,16 @@ ex:ExampleValueResource
 <section id="sparql-constraint-components">
 	<h2>SPARQL-based Constraint Components</h2>
 	<p>
-		SPARQL-based constraints as introduced in the previous section provide a lot of flexibility.
+		shs:SPARQLConstraintComponent, as introduced in the previous section provide a lot of flexibility.
 		However, SPARQL-based constraints may be hard to understand for some people or lead to repetition.
-		<a>Constraint components</a> are a way to abstract the complexity of SPARQL and to declare high level
-		reusable components similar to the <a href="#constraints">Core constraint components</a>.
-		Such constraint components can be declared using the SHACL RDF vocabulary and thus shared and reused.
+		<a>SPARQL-Based Constraint components</a> are a way to abstract the complexity of SPARQL and to declare high level
+		reusable constraint components, similar to the <a href="#constraints">Core constraint components</a>.
+		Such constraint components can be declared using the SHACL-SPARQL RDF vocabulary and thus shared and reused.
 	</p>
 	<p>
-		<code>shs:ConstraintComponent</code> is the <a>SHACL class</a> of all constraint components.
-		Each constraint component specifies:
+		<code>shs:ConstraintComponent</code> is the <a>SHACL class</a> of all SPARQL-Based constraint components.
+		<code>shs:ConstraintComponent</code> is an <code>rdfs:subClassOf</code> of <code>sh:ConstraintComponent</code>
+		Each SPARQL-Based constraint component specifies:
 	</p>
 	<ul>
 		<li>one or more <a href="#constraint-components-parameters">parameters</a> (e.g. <code>sh:class</code>)</li>
@@ -867,13 +865,13 @@ ex:ExampleValueResource
 			Note that this is only an example implementation and should not be considered normative.
 		</p>
 		<pre class="example-shapes" title="Constraint component based on SPARQL">
-shs:PatternConstraintComponent
+sh:PatternConstraintComponent
 	a shs:ConstraintComponent ;
 	shs:parameter [
-		shs:predicate shs:pattern ;
+		shs:predicate sh:pattern ;
 	] ;
 	shs:parameter [
-		shs:predicate shs:flags ;
+		shs:predicate sh:flags ;
 		shs:optional true ;
 	] ;
 	shs:validator shimpl:hasPattern .
@@ -961,8 +959,8 @@ shimpl:hasPattern
 			in order:
 		</p>
 		<ol>
-			<li>For <a>shapes</a>, use one of the values of <code>shs:shapeValidator</code>, if present.</li>
-			<li>For <a>property constraints</a>, use one of the values of <code>shs:propertyValidator</code>, if
+			<li>For <a>shapes</a>, use one of the values of <code>shs:shapeSelfValidator</code>, if present.</li>
+			<li>For <a>property constraints</a>, use one of the values of <code>shs:shapePathValidator</code>, if
 				present.
 			</li>
 			<li>Otherwise, use one of the values of <code>shs:validator</code>.
@@ -974,7 +972,7 @@ shimpl:hasPattern
 		</p>
 		<p>
 			SHACL-SPARQL includes two types of validators, based on <a href="#SPARQLSelectValidator">SPARQL
-			SELECT</a> (for <code>shs:shapeValidator</code> and <code>shs:propertyValidator</code>)
+			SELECT</a> (for <code>shs:shapeSelfValidator</code> and <code>shs:shapePathValidator</code>)
 			or <a href="#SPARQLAskValidator">SPARQL ASK</a> queries (for <code>shs:validator</code>).
 		</p>
 		<section id="SPARQLSelectValidator">
@@ -985,7 +983,7 @@ shimpl:hasPattern
 				The value of <code>shs:select</code> is a valid SPARQL query using the aforementioned <a
 					href="#sparql-prefixes">prefix handling rules</a>.
 				The query returns the result variable <code>this</code> in its SELECT clause.
-				This type of validator can be used as values of <code>shs:shapeValidator</code> or <code>shs:propertyValidator</code>.
+				This type of validator can be used as values of <code>shs:shapeSelfValidator</code> or <code>shs:shapePathValidator</code>.
 			</p>
 			<p>
 				The following example illustrates the declaration of a constraint component based on a SPARQL SELECT
@@ -1011,7 +1009,7 @@ ex:LanguageConstraintComponentUsingSELECT
 		sh:description "The language tag, e.g. \"de\"." ;
 	] ;
 	shs:labelTemplate "Values are literals with language \"{$lang}\"" ;
-	shs:propertyValidator [
+	shs:shapePathValidator [
 		a shs:SPARQLSelectValidator ;
 		shs:message "Values are literals with language \"{?lang}\"" ;
 		shs:select """
@@ -1030,12 +1028,12 @@ ex:LanguageConstraintComponentUsingSELECT
 ex:LanguageExampleShape
 	a sh:Shape ;
 	<span class="target-can-be-skipped">sh:targetClass ex:Country ;</span>
-	shs:property [
-		shs:predicate ex:germanLabel ;
+	sh:shape [
+		sh:path ex:germanLabel ;
 		ex:lang "de" ;
 	] ;
-	shs:property [
-		shs:predicate ex:englishLabel ;
+	sh:shape [
+		sh:path ex:englishLabel ;
 		ex:lang "en" ;
 	] .</pre>
 			<p>
@@ -1222,6 +1220,14 @@ ex:hasLang
 		</p>
 	</section>
 
+</section>
+
+<section>
+	<h2>SHACL-SPARQL Processors</h2>
+	<p>
+		A SHACL-SPARQL processor MUST be a conformant SHACL Processor.
+		<span class="todo">more?</span>
+	</p>
 </section>
 
 <section id="ack" class="appendix informative">
