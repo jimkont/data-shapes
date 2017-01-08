@@ -131,11 +131,11 @@
 			padding: 8px;
 		}
 
-		.focus-node-selected {
+		.node-selected {
 			color: blue;
 		}
 
-		.focus-node-error {
+		.node-error {
 			color: red;
 		}
 
@@ -143,7 +143,7 @@
 			color: grey;
 		}
 
-		.focus-node-error {
+		.node-error {
 			color: red;
 		}
 
@@ -404,11 +404,11 @@
 	# This box represents an input data graph.
 	# When highlighting is used in the examples:
 
-	# Elements highlighted in blue are <a>focus nodes</a>
-	<span class="focus-node-selected">ex:Bob</span> a ex:Person .
+	# Elements highlighted in blue are <a>target nodes</a>
+	<span class="node-selected">ex:Bob</span> a ex:Person .
 
-	# Elements highlighted in red are focus nodes that fail <a href="#validation">validation</a>
-	<span class="focus-node-error">ex:Alice</span> a ex:Person .</pre>
+	# Elements highlighted in red are nodes that fail <a href="#validation">validation</a>
+	<span class="node-error">ex:Alice</span> a ex:Person .</pre>
 
 		<pre class="example-results">
 	# This box represents an output results graph</pre>
@@ -1041,7 +1041,7 @@ ex:PersonShape
 	sh:targetNode ex:Alice .</pre>
 
 			<pre class="example-data">
-<span class="focus-node-selected">ex:Alice</span> a ex:Person .
+<span class="node-selected">ex:Alice</span> a ex:Person .
 ex:Bob a ex:Person .</pre>
 		</section>
 
@@ -1066,11 +1066,11 @@ ex:PersonShape
 	sh:targetClass ex:Person .</pre>
 
 			<pre class="example-data">
-<span class="focus-node-selected">ex:Alice</span> a ex:Person .
-<span class="focus-node-selected">ex:Bob</span> a ex:Person .
+<span class="node-selected">ex:Alice</span> a ex:Person .
+<span class="node-selected">ex:Bob</span> a ex:Person .
 ex:NewYork a ex:Place .</pre>
 			<p>
-				In this example, only <code>ex:Alice</code> and <code>ex:Bob</code> are focus nodes.
+				In this example, only <code>ex:Alice</code> and <code>ex:Bob</code> are target nodes.
 				Note that, according to the <a>SHACL instance</a> definition, all the
 				<code>rdfs:subClassOf</code> declarations needed to walk the class hierarchy need to exist in
 				the <a>data graph</a>.
@@ -1078,11 +1078,11 @@ ex:NewYork a ex:Place .</pre>
 				graphs.
 			</p>
 			<p>
-				In the following example, the selected focus node is only <code>ex:Who</code>.
+				In the following example, the only target node is <code>ex:Who</code>.
 			</p>
 			<pre class="example-data">
 ex:Doctor rdfs:subClassOf ex:Person .
-<span class="focus-node-selected">ex:Who</span> a ex:Doctor .
+<span class="node-selected">ex:Who</span> a ex:Doctor .
 ex:House a ex:Nephrologist .</pre>
 
 
@@ -1109,10 +1109,10 @@ ex:House a ex:Nephrologist .</pre>
 ex:Person
 	<b>a rdfs:Class</b>, sh:Shape .</pre>
 			<pre class="example-data">
-<span class="focus-node-selected">ex:Alice</span> a ex:Person .
+<span class="node-selected">ex:Alice</span> a ex:Person .
 ex:NewYork a ex:Place .</pre>
 			<p>
-				In this example, only <code>ex:Alice</code> is a focus node, because it is a <a>SHACL instance</a> of
+				In this example, only <code>ex:Alice</code> is a target node, because it is a <a>SHACL instance</a> of
 				<code>ex:Person</code> which is both a class and a shape in the <a>shapes graph</a>.
 			</p>
 		</section>
@@ -1137,7 +1137,7 @@ ex:TargetSubjectsOfExampleShape
 	a sh:Shape ;
 	sh:targetSubjectsOf ex:knows .</pre>
 			<pre class="example-data">
-<span class="focus-node-selected">ex:Alice</span> ex:knows ex:Bob .
+<span class="node-selected">ex:Alice</span> ex:knows ex:Bob .
 ex:Bob ex:livesIn ex:NewYork .</pre>
 			<p>
 				In the example above, only <code>ex:Alice</code> is validated against the given shape,
@@ -1166,7 +1166,7 @@ ex:TargetObjectsOfExampleShape
 	a sh:Shape ;
 	sh:targetObjectsOf ex:knows .</pre>
 			<pre class="example-data">
-ex:Alice ex:knows <span class="focus-node-selected">ex:Bob</span> .
+ex:Alice ex:knows <span class="node-selected">ex:Bob</span> .
 ex:Bob ex:livesIn ex:NewYork .</pre>
 			<p>
 				In the example above, only <code>ex:Bob</code> is validated against the given shape,
@@ -1453,7 +1453,7 @@ ex:ClassExampleShape
 		<pre class="example-data">
 ex:Alice a ex:Person .
 ex:Bob ex:knows ex:Alice .
-<span class="focus-node-error">ex:Carol</span> ex:knows ex:Bob .</pre>
+<span class="node-error">ex:Carol</span> ex:knows ex:Bob .</pre>
 	</section>
 
 	<section id="DatatypeConstraintComponent">
@@ -1472,8 +1472,8 @@ ex:DatatypeExampleShape
 
 		<pre class="example-data">
 ex:Alice ex:age "23"^^xsd:integer .
-<span class="focus-node-error">ex:Bob</span> ex:age "twenty two" .
-<span class="focus-node-error">ex:Carol</span> ex:age "23"^^xsd:int .</pre>
+<span class="node-error">ex:Bob</span> ex:age "twenty two" .
+<span class="node-error">ex:Carol</span> ex:age "23"^^xsd:int .</pre>
 
 	</section>
 
@@ -1495,7 +1495,7 @@ ex:NodeKindExampleShape
 
 		<pre class="example-data">
 ex:Bob ex:knows ex:Alice .
-<span class="focus-node-error">ex:Alice</span> ex:knows "Bob" .</pre>
+<span class="node-error">ex:Alice</span> ex:knows "Bob" .</pre>
 
 	</section>
 
@@ -1528,7 +1528,7 @@ ex:MinCountExampleShape
 
 		<pre class="example-data">
 ex:Alice ex:name "Alice" .
-<span class="focus-node-error">ex:Bob</span> ex:givenName "Bob"@en .</pre>
+<span class="node-error">ex:Bob</span> ex:givenName "Bob"@en .</pre>
 	</section>
 
 
@@ -1640,7 +1640,7 @@ ex:PasswordExampleShape
 
 		<pre class="example-data">
 ex:Bob ex:password "123456789" .
-<span class="focus-node-error">ex:Alice</span> ex:password "1234567890ABC" .</pre>
+<span class="node-error">ex:Alice</span> ex:password "1234567890ABC" .</pre>
 	</section>
 
 	<section id="sh:LanguageInConstraintComponent">
@@ -1675,7 +1675,7 @@ ex:Mountain
 	ex:prefLabel "Hill"@en-NZ ;
 	ex:prefLabel "Maunga"@mi .
 
-<span class="focus-node-error">ex:Berg</span>
+<span class="node-error">ex:Berg</span>
 	ex:prefLabel "Berg" ;
 	ex:prefLabel "Berg"@de ;
 	ex:prefLabel ex:BergLabel .</pre>
@@ -1725,7 +1725,7 @@ ex:PatternExampleShape
 		<pre class="example-data">
 ex:Bob ex:bCode "b101" .
 ex:Alice ex:bCode "B102" .
-<span class="focus-node-error">ex:Carol</span> ex:bCode "C103" .</pre>
+<span class="node-error">ex:Carol</span> ex:bCode "C103" .</pre>
 
 	</section>
 
@@ -1766,7 +1766,7 @@ ex:Alice
 	ex:label "Alice"@en ;
 	ex:label "Alice"@fr .
 
-<span class="focus-node-error">ex:Bob</span>
+<span class="node-error">ex:Bob</span>
 	ex:label "Bob"@en ;
 	ex:label "Bobby"@en .</pre>
 
@@ -1829,7 +1829,7 @@ ex:Bob
 
 		<p>
 			The following example illustrates the use of <code>sh:disjoint</code> in a shape to specify
-			that certain focus nodes cannot share any values for <code>ex:prefLabel</code> and <code>ex:altLabel</code>.
+			that certain nodes cannot share any values for <code>ex:prefLabel</code> and <code>ex:altLabel</code>.
 		</p>
 		<pre class="example-shapes">
 ex:DisjointExampleShape
@@ -1844,7 +1844,7 @@ ex:USA
 	ex:prefLabel "USA" ;
 	ex:altLabel "United States" .
 
-<span class="focus-node-error">ex:Germany</span>
+<span class="node-error">ex:Germany</span>
 	ex:prefLabel "Germany" ;
 	ex:altLabel "Germany" .</pre>
 
@@ -1858,17 +1858,6 @@ ex:USA
 			are similar to sh:EqualsConstraintComponent                              </span>
 		</p>
 		<p><em>The remainder of this section is informative.</em></p>
-	</section>
-
-	<section id="LessThanOrEqualsConstraintComponent">
-		<h3>sh:LessThanOrEqualsConstraintComponent (TODO)</h3>
-		<p>
-		<span class="todo">
-		sh:LessThanConstraintComponent and sh:LessThanOrEqualsConstraintComponent
-			are similar to sh:EqualsConstraintComponent                              </span>
-		</p>
-		<p><em>The remainder of this section is informative.</em></p>
-
 		<p>
 			The following example illustrates the use of <code>sh:lessThan</code> in a shape to specify
 			that all values of <code>ex:startDate</code> are "before" the values of <code>ex:endDate</code>.
@@ -1880,6 +1869,19 @@ ex:LessThanExampleShape
 		sh:path ex:startDate ;
 		sh:lessThan ex:endDate ;
 	] .</pre>
+
+	</section>
+
+	<section id="LessThanOrEqualsConstraintComponent">
+		<h3>sh:LessThanOrEqualsConstraintComponent (TODO)</h3>
+		<p>
+		<span class="todo">
+		sh:LessThanConstraintComponent and sh:LessThanOrEqualsConstraintComponent
+			are similar to sh:EqualsConstraintComponent                              </span>
+		</p>
+		<p><em>The remainder of this section is informative.</em></p>
+
+
 	</section>
 
 	<section id="ShapeConstraintComponent">
@@ -1941,7 +1943,7 @@ ex:ShapeExampleValidResource
 
 		<p>
 			The following example illustrates the use of <code>sh:not</code> in a shape to specify the condition
-			that certain focus nodes cannot have any value of <code>ex:property</code>.
+			that certain nodes cannot have any value of <code>ex:property</code>.
 		</p>
 		<pre class="example-shapes">
 ex:NotExampleShape
@@ -1955,7 +1957,7 @@ ex:NotExampleShape
 		] ;
 	] .</pre>
 		<pre class="example-data">
-<span class="focus-node-error">ex:InvalidInstance1</span> ex:property "Some value" .</pre>
+<span class="node-error">ex:InvalidInstance1</span> ex:property "Some value" .</pre>
 
 	</section>
 
@@ -1986,7 +1988,7 @@ ex:NotExampleShape
 
 		<p>
 			The following example illustrates the use of <code>sh:and</code> in a shape to specify the condition
-			that certain focus nodes have exactly one value of <code>ex:property</code>.
+			that certain nodes have exactly one value of <code>ex:property</code>.
 			This is achieved via the conjunction of a separate named shape (<code>ex:SuperShape</code>) which specifies
 			the minimum count, and a blank node shape that additionally specifies the maximum count.
 			As shown here, <code>sh:and</code> can be used to implement a specialization mechanism between shapes.
@@ -2018,7 +2020,7 @@ ex:ValidInstance
 	ex:property "One" .
 
 # Invalid: more than one property
-<span class="focus-node-error">ex:InvalidInstance</span>
+<span class="node-error">ex:InvalidInstance</span>
 	ex:property "One" ;
 	ex:property "Two" .</pre>
 	</section>
@@ -2029,6 +2031,55 @@ ex:ValidInstance
 			<span class="todo">sh:OrConstraintComponent is similar to sh:AndConstraintComponent</span>
 		</p>
 		<p><em>The remainder of this section is informative.</em></p>
+
+		<p>
+			The following example illustrates the use of <code>sh:or</code> in a shape to specify the condition
+			that certain nodes have at least one value of <code>ex:firstName</code>
+			or at least one value of <code>ex:givenName</code>.
+		</p>
+		<pre class="example-shapes">
+ex:OrConstraintExampleShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetNode ex:Bob ;</span>
+	sh:or (
+		[
+			sh:property [
+				sh:predicate ex:firstName ;
+				sh:minCount 1 ;
+			]
+		]
+		[
+			sh:property [
+				sh:predicate ex:givenName ;
+				sh:minCount 1 ;
+			]
+		]
+	) .</pre>
+		<pre class="example-data">
+ex:Bob ex:firstName "Robert" .</pre>
+		<p>
+			The next example shows how <code>sh:or</code> can be used in a <a>property constraint</a> to state that the values of
+			the given property <code>ex:address</code> may be either literals with datatype <code>xsd:string</code>
+			or <a>SHACL instances</a> of the class <code>ex:Address</code>.
+		</p>
+		<pre class="example-shapes">
+ex:PersonAddressShape
+	a sh:Shape ;
+	<span class="target-can-be-skipped">sh:targetClass ex:Person ;</span>
+	sh:property [
+		sh:predicate ex:address ;
+		sh:or (
+			[
+				sh:datatype xsd:string ;
+			]
+			[
+				sh:class ex:Address ;
+			]
+		)
+	] .</pre>
+		<pre class="example-data">
+ex:Bob ex:address "123 Prinzengasse, Vaduz, Liechtenstein" .</pre>
+
 	</section>
 
 	<section id="QualifiedValueShapeConstraintComponent">
@@ -2137,7 +2188,7 @@ ex:Jane
 
 		<p>
 			The following example illustrates the use of <code>sh:closed</code> in a shape to specify the condition
-			that certain focus nodes only have values for <code>ex:exampleProperty1</code> and
+			that certain nodes only have values for <code>ex:exampleProperty1</code> and
 			<code>ex:exampleProperty2</code>.
 			The "ignored" property <code>rdf:type</code> would also be allowed.
 		</p>
@@ -2158,7 +2209,7 @@ ex:ClosedShapeExampleShape
 ex:Alice
 	ex:firstName "Alice" .
 
-<span class="focus-node-error">ex:Bob</span>
+<span class="node-error">ex:Bob</span>
 	ex:firstName "Bob" ;
 	ex:middleInitial "J" .</pre>
 
@@ -2236,17 +2287,19 @@ ex:RainbowPony ex:color ex:Pink .</pre>
 <section>
 	<h2>SHACL Processors</h2>
 	<p>
-		A SHACL processor MUST provide an interface that takes two RDF graphs---a
-		data graph and a potential shapes graph. If the potential shapes graph is
-		not a shapes graph the processor MUST signal an error. If the potential
-		shapes graph is recursive the behaviour of the processor is not fully
-		defined. Processors MAY signal an error if the potential shapes graph is
-		recursive. Otherwise, unless the processor encounters a failure, it MUST
-		create some representation of an RDF graph that is a validation report for
-		the validation of the data graph against the potential shapes graph and
-		return the representation or a location from which the representation can be
-		retrieved. The representation can be a document in a syntax for RDF graphs,
-		such as Turtle, or an RDF graph stored in a graph repository.
+		A SHACL processor MUST provide an interface that takes two RDF graphs - a data graph and a potential shapes graph.
+	</p>
+	<ul>
+		<li>If the potential shapes graph is not a shapes graph the processor MUST signal an error.</li>
+		<li>If the potential shapes graph is recursive the behaviour of the processor is not fully defined.</li>
+	</ul>
+	Processors MAY signal an error if the potential shapes graph is
+	recursive. Otherwise, unless the processor encounters a failure, it MUST
+	create some representation of an RDF graph that is a validation report for
+	the validation of the data graph against the potential shapes graph and
+	return the representation or a location from which the representation can be
+	retrieved. The representation can be a document in a syntax for RDF graphs,
+	such as Turtle, or an RDF graph stored in a graph repository.
 	</p>
 	<p>
 		A SHACL processor SHOULD provide an interface similar to above except that
@@ -2274,13 +2327,17 @@ ex:RainbowPony ex:color ex:Pink .</pre>
 <section id="entailment">
 	<h2>Entailment</h2>
 	<p>
-		By default, SHACL does not assume any <span class="term">entailment regime</span> [[!sparql11-entailment]] to be activated on the <a>data graph</a>.
-		However, the property <code>sh:entailment</code> can be used in the <a>shapes graph</a> to instruct a SHACL processor to ensure that a given entailment is activated on the <a>data graph</a>.
-		The <a>values</a> of <code>sh:entailment</code> are <a>IRIs</a>, with common use cases covered by [[!sparql11-entailment]].
+		By default, SHACL does not assume any <span class="term">entailment regime</span> [[!sparql11-entailment]] to be
+		activated on the <a>data graph</a>.
+		However, the property <code>sh:entailment</code> can be used in the <a>shapes graph</a> to instruct a SHACL
+		processor to ensure that a given entailment is activated on the <a>data graph</a>.
+		The <a>values</a> of <code>sh:entailment</code> are <a>IRIs</a>, with common use cases covered by
+		[[!sparql11-entailment]].
 	</p>
 	<p>
 		SHACL processors are not required to support any entailment regimes.
-		If an entailment regime is provided in the <a>shapes graph</a> which is not supported by the SHACL processor, the <a>validation</a> MUST produce a <a>failure</a>.
+		If an entailment regime is provided in the <a>shapes graph</a> which is not supported by the SHACL processor,
+		the <a>validation</a> MUST produce a <a>failure</a>.
 	</p>
 </section>
 
