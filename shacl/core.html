@@ -838,7 +838,7 @@ ex:PersonShape
 	</ul>
 	<p>
 		A <dfn>validation result</dfn> from RDF term f, optional RDF term v, data graph
-		D, constraint c with type C, and shape <code>s</code> in shapes graph <code>S</code>
+		D, constraint <code>c</code> with type C, and shape <code>s</code> in shapes graph <code>S</code>
 		is a node in a results graph <code>G</code> that meets the following conditions:
 	</p>
 	<ul>
@@ -989,14 +989,14 @@ ex:PersonShape
 			is a <dfn>shape-inducing parameter</dfn>.
 		</p>
 		<p>
-			For a constraint component C with mandatory parameters p1, ..., pn a shape <code>s</code>
-			in a shapes graph <code>S</code> has a <dfn data-lt="constraints">constraint</dfn> of type C with <dfn>mandatory
+			For a constraint component <code>c</code> with mandatory parameters p1, ..., pn a shape <code>s</code>
+			in a shapes graph <code>S</code> has a <dfn data-lt="constraints">constraint</dfn> of type <code>c</code> with <dfn>mandatory
 			parameter values</dfn> <code>&lt;p1,v1&gt;, ..., &lt;pn,vn&gt;</code> in <code>S</code> when <code>s</code>
 			has vi as a value for
-			pi in <code>S</code>. If <code>s</code> in <code>S</code> has a constraint of type C in <code>S</code> then
+			pi in <code>S</code>. If <code>s</code> in <code>S</code> has a constraint of type <code>c</code> in <code>S</code> then
 			the <dfn>optional
 			parameter values</dfn> of the constraint in <code>S</code> are all the &lt;oi,vi&gt; where oi is an
-			optional parameter of C and <code>s</code> has vi as a value for oi in <code>S</code>.
+			optional parameter of <code>c</code> and <code>s</code> has vi as a value for oi in <code>S</code>.
 			The <dfn>parameter values</dfn> of a constraint are its manadatory parameter values and
 			its optional parameter values.
 		</p>
@@ -1064,9 +1064,9 @@ ex:Bob a ex:Person .</pre>
 				<code>G</code> that
 				is not an IRI then <code>s</code> is an <a>ill-formed shape</a> in <code>G</code>.
 
-				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value c for
+				If <code>s</code> is a shape in a shapes graph <code>S</code> and <code>s</code> has value <code>c</code> for
 				sh:targetClass in
-				S then the set of SHACL instances of c in a data graph <code>D</code> is a **target**
+				<code>S</code> then the set of SHACL instances of <code>c</code> in a data graph <code>D</code> is a **target**
 				from <code>D</code> for <code>s</code> in <code>S</code>.
 			</p>
 
@@ -1429,7 +1429,7 @@ ex:AddressGroup
 	<p>
 		Given an RDF term f, a set of RDF terms <code>V</code>, a data graph D, a constraint c,
 		and a shape <code>s</code> in a shapes graph <code>S</code> the possible **results of validating** f
-		and <code>v</code> with <code>D</code> against c in <code>S</code>, <code>results(f,V,D,c,s,S)</code>, is a set
+		and <code>v</code> with <code>D</code> against <code>c</code> in <code>S</code>, <code>results(f,V,D,c,s,S)</code>, is a set
 		of results
 		structures as defined in this section.
 	</p>
@@ -1471,9 +1471,19 @@ ex:Bob ex:knows ex:Alice .
 	</section>
 
 	<section id="DatatypeConstraintComponent">
-		<h3>sh:DatatypeConstraintComponent (todo)</h3>
-		<span class="todo">sh:DatatypeConstraintComponent and sh:NodeKindConstraintComponent are
-			similar to sh:ClassConstraintComponent </span>
+		<h3>sh:DatatypeConstraintComponent</h3>
+
+		<P>
+			sh:DatatypeConstraintComponent is a constraint component with mandatory parameter sh:datatype.
+			A shape in an RDF graph <code>G</code> with a value for sh:datatype in <code>G</code> that is not an IRI is an ill-formed shape in <code>G</code>.
+		</P>
+		<P>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:DatatypeConstraintComponent and that has mandatory parame-
+			ter values &lt;sh:datatype, x&gt; contains a different top-level validation result from
+			<code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  that is not a literal with datatype x, and no other
+			top-level validation results.
+		</P>
 		<p><em>The remainder of this section is informative.</em></p>
 		<pre class="example-shapes" title="Shape with sh:datatype">
 ex:DatatypeExampleShape
@@ -1492,10 +1502,22 @@ ex:Alice ex:age "23"^^xsd:integer .
 	</section>
 
 	<section id="NodeKindConstraintComponent">
-		<h3>sh:NodeKindConstraintComponent (todo)</h3>
+		<h3>sh:NodeKindConstraintComponent</h3>
 
-		<span class="todo">sh:DatatypeConstraintComponent and sh:NodeKindConstraintComponent are
-			similar to sh:ClassConstraintComponent </span>
+		<p>
+			sh:NodeKindConstraintComponent is a constraint component with manda-
+			tory parameter sh:nodeKind. A shape in an RDF graph <code>G</code> with a value for
+			sh:nodeKind in <code>G</code> that is not one of sh:BlankNode, sh:IRI, or sh:Literal is
+			an ill-formed shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:NodeKindConstraintComponent and that has mandatory parame-
+			ter values &lt;sh:nodeKind, x&gt; contains a different top-level validation result from
+			<code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  that is not a blank node if x is sh:BlankNode, not
+			an IRI if x is sh:IRI, or not a literal if x is sh:Literal, and no other top-level
+			validation results.
+		</p>
 		<p><em>The remainder of this section is informative.</em></p>
 
 		<pre class="example-shapes">
@@ -1524,7 +1546,7 @@ ex:Bob ex:knows ex:Alice .
 			literal with datatype xsd:integer is an <a>ill-formed shape</a> in <code>G</code>.
 		</p>
 		<p>
-			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> has type
 			sh:MinCountConstraintComponent and parameter values &lt;sh:minCount,i&gt; contains
 			a single top-level validation result from f,D,c,s,S and no other top-level
 			validation results if the cardinality of <code>V</code> is less than the *literal value*
@@ -1547,10 +1569,20 @@ ex:Alice ex:name "Alice" .
 
 
 	<section id="MaxCountConstraintComponent">
-		<h3>sh:MaxCountConstraintComponent (todo)</h3>
+		<h3>sh:MaxCountConstraintComponent</h3>
 		<p>
 
-			<span class="todo">sh:MaxCountConstraintComponent similar to sh:MinCountConstraintComponent</span>
+			sh:MaxCountConstraintComponent is a constraint component with manda-
+			tory parameter sh:maxCount. A shape in an RDF graph <code>G</code> with a value for
+			sh:maxCount in <code>G</code> that is not a literal with datatype xsd:integer is an ill-
+			formed shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:MaxCountConstraintComponent and that has mandatory param-
+			eter values &lt;sh:maxCount, i&gt; contains a single top-level validation result from
+			f ,D,c,s,S and no other top-level validation results if the cardinality of v is greater
+			than the literal value of i, and no top-level validation results otherwise.
 		</p>
 
 		<p><em>The remainder of this section is informative.</em></p>
@@ -1582,7 +1614,7 @@ ex:Bob ex:birthDate "May 5th 1990" .</pre>
 			suitable for use in the SPARQL operator <code>&lt;</code> is an <a>ill-formed shape</a> in <code>G</code>.
 		</p>
 		<p>
-			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> has type
 			sh:MinExclusiveConstraintComponent and parameter values &lt;sh:minExclusive,i&gt;
 			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
 			for each <code>v</code> in <code>V</code> for which <code>m &lt; v</code> returns false or produces an error
@@ -1592,52 +1624,93 @@ ex:Bob ex:birthDate "May 5th 1990" .</pre>
 	</section>
 
 	<section id="MinInclusiveConstraintComponent">
-		<h3>sh:MinInclusiveConstraintComponent (TODO)</h3>
+		<h3>sh:MinInclusiveConstraintComponent</h3>
 
-		<p><span class="todo">
-			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
-			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
-			are similar to sh:MinExclusiveConstraintComponent   </span>
+		<p>
+			sh:MinInclusiveConstraintComponent is a constraint component with mandatory parameter sh:minInclusive.
+			A shape in an RDF graph <code>G</code> with a value
+			for sh:minInclusive in <code>G</code> that is not suitable for use in the SPARQL operator <= is an ill-formed shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:MinInclusiveConstraintComponent and that has mandatory parameter values
+			&lt;sh:minInclusive, i&gt; contains different top-level validation result from
+			<code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  for which i<=v returns false or produces
+			an error in SPARQL, and no other top-level validation results.
 		</p>
 	</section>
 
 	<section id="MaxExclusiveConstraintComponent">
-		<h3>sh:MaxExclusiveConstraintComponent (TODO)</h3>
+		<h3>sh:MaxExclusiveConstraintComponent</h3>
 
-		<p><span class="todo">
-			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
-			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
-			are similar to sh:MinExclusiveConstraintComponent   </span>
+		<p>
+			sh:MaxExclusiveConstraintComponent is a constraint component with mandatory
+			parameter sh:maxExclusive. A shape in an RDF graph <code>G</code> with a value
+			for sh:maxExclusive in <code>G</code> that is not suitable for use in the SPARQL operator
+			> is an ill-formed shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:MaxExclusiveConstraintComponent and that has mandatory pa-
+			rameter values &lt;sh:maxExclusive, i&gt; contains a different top-level validation
+			result from <code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  for which i>v returns false or produces an
+			error in SPARQL, and no other top-level validation results.
 		</p>
 	</section>
 
 	<section id="MaxInclusiveConstraintComponent">
-		<h3>sh:MaxInclusiveConstraintComponent (TODO)</h3>
+		<h3>sh:MaxInclusiveConstraintComponent</h3>
 
-		<p><span class="todo">
-			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
-			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
-			are similar to sh:MinExclusiveConstraintComponent   </span>
+		<p>
+			sh:MaxInclusiveConstraintComponent is a constraint component with mandatory
+			parameter sh:maxInclusive. A shape in an RDF graph <code>G</code> with a value
+			for sh:maxInclusive in <code>G</code> that is not suitable for use in the SPARQL operator
+			>= is an ill-formed shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:MaxInclusiveConstraintComponent and that has mandatory pa-
+			rameter values &lt;sh:maxInclusive, i&gt; contains a different top-level validation
+			result from <code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  for which i>=v returns false or produces
+			an error in SPARQL, and no other top-level validation results.
 		</p>
 	</section>
 
 	<section id="sh:MinLengthConstraintComponent">
-		<h3>sh:MinLengthConstraintComponent (TODO)</h3>
+		<h3>sh:MinLengthConstraintComponent</h3>
 
-		<p><span class="todo">
-			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
-			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
-			are similar to sh:MinExclusiveConstraintComponent   </span>
+		<p>
+			sh:MinLengthConstraintComponent is a constraint component with man-
+			datory parameter sh:minLength. A shape in an RDF graph <code>G</code> with a value
+			for sh:minLength in <code>G</code> that is not a literal with datatype xsd:integer is an
+			ill-formed shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:MinLengthConstraintComponent and that has mandatory parameter
+			values &lt;sh:minLength, i&gt; contains a different top-level validation result from
+			<code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  that is a blank node or where the length of its string
+			representation (as defined by the SPARQL str function) is less than the literal
+			value of i, and no other top-level validation results.
 		</p>
 	</section>
 
 	<section id="sh:MaxLengthConstraintComponent">
-		<h3>sh:MaxLengthConstraintComponent (TODO)</h3>
+		<h3>sh:MaxLengthConstraintComponent</h3>
 
-		<p><span class="todo">
-			sh:MinInclusiveConstraintComponent, sh:MaxExclusiveConstraintComponent,
-			sh:MaxInclusiveConstraintComponent, sh:minLength, and sh:maxLength
-			are similar to sh:MinExclusiveConstraintComponent   </span>
+		<p>
+			sh:MaxLengthConstraintComponent is a constraint component with mandatory
+			parameter sh:maxLength. A shape in an RDF graph <code>G</code> with a value
+			for sh:maxLength in <code>G</code> that is not a literal with datatype xsd:integer is an
+			ill-formed shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:MaxLengthConstraintComponent and that has mandatory parameter
+			values &lt;sh:maxLength, i&gt; contains a different top-level validation result from
+			<code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  that is a blank node or where the length of its string
+			representation (as defined by the SPARQL str function) is greater than the
+			literal value of i, and no other top-level validation results.
 		</p>
 
 		<p><em>The remainder of this section is informative.</em></p>
@@ -1658,11 +1731,21 @@ ex:Bob ex:password "123456789" .
 	</section>
 
 	<section id="sh:LanguageInConstraintComponent">
-		<h3>sh:LanguageInConstraintComponent (TODO)</h3>
+		<h3>sh:LanguageInConstraintComponent</h3>
 
-		<p> <span class="todo">
-		sh:LanguageInConstraintComponent are similar
-		to sh:MinExclusiveConstraintComponent</span>
+		<p>
+			sh:LanguageInConstraintComponent is a constraint component with mandatory
+			list-taking parameter sh:languageIn. A shape in an RDF graph <code>G</code> with
+			a value for sh:languageIn that is not a literal with datatype xsd:string is an
+			ill-formed shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:LanguageInConstraintComponent and that has mandatory parameter
+			values &lt;sh:languageIn, l&gt; contains a different top-level validation result
+			from <code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  that is not a language-tagged string whose
+			language tag matches the literal value of one of elements of l as defined by the
+			SPARQL langMatches function, and no other top-level validation results.
 		</p>
 
 		<p><em>The remainder of this section is informative.</em></p>
@@ -1712,7 +1795,7 @@ ex:Mountain
 			sh:flags in <code>G</code> is an <a>ill-formed shape</a> in <code>G</code>.
 		</p>
 		<p>
-			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> has type
 			sh:PatternConstraintComponent and mandatory parameter values &lt;sh:pattern,r&gt;
 			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
 			for each <code>v</code> in <code>V</code>
@@ -1754,7 +1837,7 @@ ex:Alice ex:bCode "B102" .
 			"true"^^xsd:boolean is an <a>ill-formed shape</a> in <code>G</code>.
 		</p>
 		<p>
-			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> has type
 			sh:UniqueLangConstraintComponent and parameter values &lt;sh:uniqueLang,t&gt;
 			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
 			for each <code>v</code> in <code>V</code> that is is a language-tagged literal with the same language
@@ -1796,7 +1879,7 @@ ex:Alice
 			is an <a>ill-formed shape</a> in <code>G</code>.
 		</p>
 		<p>
-			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> has type
 			sh:EqualsConstraintComponent and parameter values &lt;sh:equals,p&gt;
 			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
 			for each <code>v</code> in <code>V</code> that is not a value of <code>f</code> for <code>p</code> in <code>D</code>
@@ -1832,7 +1915,7 @@ ex:Bob
 			IRI is an <a>ill-formed shape</a> in <code>G</code>.
 		</p>
 		<p>
-			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> has type
 			sh:DisjointConstraintComponent and parameter values &lt;sh:disjoint,p&gt;
 			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
 			for each <code>v</code> in <code>V</code> that is also a value of <code>f</code> for <code>p</code> in
@@ -1865,11 +1948,23 @@ ex:USA
 	</section>
 
 	<section id="LessThanConstraintComponent">
-		<h3>sh:LessThanConstraintComponent (TODO)</h3>
+		<h3>sh:LessThanConstraintComponent</h3>
 		<p>
-		<span class="todo">
-		sh:LessThanConstraintComponent and sh:LessThanOrEqualsConstraintComponent
-			are similar to sh:EqualsConstraintComponent                              </span>
+
+			sh:LessThanConstraintComponent is a constraint component with mandatory
+			parameter sh:lessThan. A shape in an RDF graph <code>G</code> with a value for
+			sh:lessThan in <code>G</code> that is not an IRI is an ill-formed shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:LessThanConstraintComponent and that has mandatory parameter
+			values &lt;sh:lessThan, p&gt; contains a different top-level validation result from
+			<code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  that does not compare as less than each value of f
+			for p in <code>G</code> using SPARQL operator <, and no other top-level validation results.
+		</p>
+		<p>
+			Note: A comparison that produces an error counts as not comparing as less
+			than.
 		</p>
 		<p><em>The remainder of this section is informative.</em></p>
 		<p>
@@ -1887,13 +1982,25 @@ ex:LessThanExampleShape
 	</section>
 
 	<section id="LessThanOrEqualsConstraintComponent">
-		<h3>sh:LessThanOrEqualsConstraintComponent (TODO)</h3>
+		<h3>sh:LessThanOrEqualsConstraintComponent</h3>
 		<p>
-		<span class="todo">
-		sh:LessThanConstraintComponent and sh:LessThanOrEqualsConstraintComponent
-			are similar to sh:EqualsConstraintComponent                              </span>
+			sh:LessThanOrEqualsConstraintComponent is a constraint component with
+			mandatory parameter sh:lessThanOrEquals. A shape in an RDF graph <code>G</code> with
+			a value for sh:lessThanOrEquals in <code>G</code> that is not an IRI is an ill-formed shape
+			in <code>G</code>.
 		</p>
-		<p><em>The remainder of this section is informative.</em></p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> is a constraint that
+			has kind sh:LessThanOrEqualsConstraintComponent and that has mandatory
+			parameter values &lt;sh:lessThanOrEquals, p&gt; contains a different top-level val-
+			idation result from <code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  that does not compare as less
+			than or equal each value of f for p in <code>G</code> using SPARQL operator <=, and no
+			other top-level validation results.
+		</p>
+		<p>
+			Note: A comparison that produces an error counts as not comparing as less
+			than or equals.
+		</p>
 
 
 	</section>
@@ -1949,9 +2056,20 @@ ex:ShapeExampleValidResource
 	</section>
 
 	<section id="NotConstraintComponent">
-		<h3>sh:NotConstraintComponent (TODO)</h3>
+		<h3>sh:NotConstraintComponent</h3>
 		<p>
-			<span class="todo">sh:NotConstraintComponent is similar to sh:ShapeConstraintComponent</span>
+			sh:NotConstraintComponent is a constraint component with mandatory
+			parameter sh:not. A shape in an RDF graph <code>G</code> with a value for sh:not in G
+			that is not an IRI or blank node is an ill-formed shape in <code>G</code>. If s is the object of
+			an RDF triple in an RDF graph <code>G</code> with predicate sh:not then s has expected
+			type sh:shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where s is not recursive and c
+			is a constraint that has kind sh:NotConstraintComponent and that has mandatory
+			parameter values &lt;sh:not, x&gt; contains a different top-level validation result
+			from <code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  where v and D do conform to x in S, and no
+			other top-level validation results.
 		</p>
 		<p><em>The remainder of this section is informative.</em></p>
 
@@ -2040,9 +2158,21 @@ ex:ValidInstance
 	</section>
 
 	<section id="OrConstraintComponent">
-		<h3>sh:OrConstraintComponent (TODO)</h3>
+		<h3>sh:OrConstraintComponent</h3>
 		<p>
-			<span class="todo">sh:OrConstraintComponent is similar to sh:AndConstraintComponent</span>
+			sh:OrConstraintComponent is a constraint component with mandatory
+			list-taking parameter sh:or. A shape in an RDF graph <code>G</code> with a value for sh:or in
+			G that is not an ASHACL list in <code>G</code> whose members in <code>G</code> are all IRIs or blank
+			nodes in <code>G</code> is an ill-formed shape in <code>G</code>. If s is a member of an ASHACL list in
+			an RDF graph <code>G</code> that is the object of an RDF triple in <code>G</code> with predicate sh:or
+			then s has expected type sh:shape in <code>G</code>.
+		</p>
+		<p>
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where s is not recursive and
+			c is a constraint that has kind sh:OrConstraintComponent and that has mandatory
+			parameter values &lt;sh:or, l&gt; contains a different top-level validation result
+			from <code>f,v,D,c,s,S</code> for each <code>v</code> in <code>V</code>  where v and D do not conform to any element
+			of l in S, and no other top-level validation results.
 		</p>
 		<p><em>The remainder of this section is informative.</em></p>
 
@@ -2187,7 +2317,7 @@ ex:Jane
 			sh:ignoredProperties in <code>G</code> is an <a>ill-formed shape</a> in <code>G</code>.
 		</p>
 		<p>
-			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> has type
 			sh:ClosedConstraintComponent and mandatory parameter values &lt;sh:closed,t&gt;
 			contains a different top-level validation result from <code>f,v,D,c,s,S</code>
 			for each RDF triple in <code>D</code> with subject f
@@ -2237,7 +2367,7 @@ ex:Alice
 			parameter sh:hasValue.
 		</p>
 		<p>
-			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> has type
 			sh:HasValueConstraintComponent and mandatory parameter values
 			&lt;sh:hasValue,x&gt; contains a single top-level validation result from f,D,c,s,S
 			and no other top-level validation results if x is not in <code>V</code>, and no top-level
@@ -2274,7 +2404,7 @@ ex:Alice
 			<a>ill-formed shape</a> in <code>G</code>.
 		</p>
 		<p>
-			Each results structure in <code>results(f,V,D,c,s,S)</code> where c has type
+			Each results structure in <code>results(f,V,D,c,s,S)</code> where <code>c</code> has type
 			sh:InConstraintComponent and parameter values &lt;sh:in,x&gt; contains
 			a different top-level validation result from <code> f,v,D,c,s,S </code> for each <code>v</code> in
 			<code>V</code>
